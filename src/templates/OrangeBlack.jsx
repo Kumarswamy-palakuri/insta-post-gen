@@ -61,7 +61,7 @@ export default function OrangeBlack({
         </div>
 
         <div className="flex items-center space-x-1 sm:space-x-1.5 flex-shrink-0">
-          <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-orange-500 text-black shadow-sm whitespace-nowrap max-w-[105px] sm:max-w-[150px] truncate">
+          <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-orange-500 text-black shadow-sm whitespace-nowrap max-w-[160px] sm:max-w-[220px] truncate">
             {question.topic || 'Quiz'}
           </span>
           <span className="px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-xs font-bold bg-zinc-800 text-orange-400 border border-zinc-700 whitespace-nowrap">
@@ -72,17 +72,17 @@ export default function OrangeBlack({
 
       {/* Question Content */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
-        <div className="flex items-center space-x-1.5 mb-1.5">
-          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-widest bg-orange-500/20 text-orange-400 border border-orange-500/40">
+        <div className="flex items-center flex-wrap gap-2 mb-1.5 flex-shrink-0">
+          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/40 whitespace-nowrap flex-shrink-0 select-none">
             {isAnswerMode ? (
               <>
-                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                <span className="text-emerald-400">ANSWER UNLOCKED</span>
+                <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                <span className="text-emerald-400 whitespace-nowrap">ANSWER UNLOCKED</span>
               </>
             ) : (
               <>
-                <Zap className="w-3 h-3 text-orange-400" />
-                <span>CHALLENGE OF THE DAY</span>
+                <Zap className="w-3 h-3 text-orange-400 flex-shrink-0" />
+                <span className="whitespace-nowrap">CHALLENGE OF THE DAY</span>
               </>
             )}
           </span>

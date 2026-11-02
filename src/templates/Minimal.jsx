@@ -57,7 +57,7 @@ export default function Minimal({
         </div>
 
         <div className="flex items-center space-x-1 sm:space-x-1.5 font-mono text-[9px] sm:text-xs text-neutral-400 flex-shrink-0">
-          <span className="uppercase tracking-wider text-neutral-300 whitespace-nowrap max-w-[105px] sm:max-w-[150px] truncate">
+          <span className="uppercase tracking-wider text-neutral-300 whitespace-nowrap max-w-[160px] sm:max-w-[220px] truncate">
             {question.topic || 'General'}
           </span>
           <span>/</span>
@@ -67,7 +67,7 @@ export default function Minimal({
 
       {/* Main Question */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
-        <div className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase mb-1.5">
+        <div className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase mb-1.5 whitespace-nowrap flex-shrink-0 select-none">
           {isAnswerMode ? '[ 02 / REVEAL ]' : '[ 01 / QUESTION ]'}
         </div>
 

@@ -61,7 +61,7 @@ export default function WhiteBlue({
         </div>
 
         <div className="flex items-center space-x-1 sm:space-x-1.5 flex-shrink-0">
-          <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200 whitespace-nowrap max-w-[105px] sm:max-w-[150px] truncate">
+          <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200 whitespace-nowrap max-w-[160px] sm:max-w-[220px] truncate">
             {question.topic || 'General Quiz'}
           </span>
           <span className="px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-xs font-bold bg-slate-200 text-slate-700 whitespace-nowrap">
@@ -72,17 +72,17 @@ export default function WhiteBlue({
 
       {/* Question Content */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
-        <div className="flex items-center space-x-1.5 mb-1.5">
-          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
+        <div className="flex items-center flex-wrap gap-2 mb-1.5 flex-shrink-0">
+          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap flex-shrink-0 select-none">
             {isAnswerMode ? (
               <>
-                <CheckCircle className="w-3 h-3 text-emerald-600" />
-                <span className="text-emerald-700">CORRECT ANSWER REVEALED</span>
+                <CheckCircle className="w-3 h-3 text-emerald-600 flex-shrink-0" />
+                <span className="text-emerald-700 whitespace-nowrap">CORRECT ANSWER REVEALED</span>
               </>
             ) : (
               <>
-                <BookOpen className="w-3 h-3 text-blue-600" />
-                <span>DAILY QUIZ TIME</span>
+                <BookOpen className="w-3 h-3 text-blue-600 flex-shrink-0" />
+                <span className="whitespace-nowrap">DAILY QUIZ TIME</span>
               </>
             )}
           </span>

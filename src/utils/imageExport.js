@@ -47,12 +47,28 @@ export const captureNodeToDataUrl = async (node, format = 'png', dimensionKey = 
     throw new Error('Target DOM node not found for export.');
   }
 
-  const dim = DIMENSIONS_CONFIG[dimensionKey] || DIMENSIONS_CONFIG.square;
+  // Ensure all fonts are loaded and rendered before taking snapshot
+  if (typeof document !== 'undefined' && document.fonts?.ready) {
+    try {
+      await document.fonts.ready;
+    } catch (e) {
+      // ignore font loading check errors
+    }
+  }
 
-  // html-to-image options for razor sharp export
+  // Brief pause to ensure any pending browser paint/layout operations settle
+  await new Promise((resolve) => setTimeout(resolve, 60));
+
+  const rect = node.getBoundingClientRect();
+  const width = Math.round(rect.width) || node.offsetWidth || 1080;
+  const height = Math.round(rect.height) || node.offsetHeight || 1080;
+
+  // html-to-image options for pixel-perfect export matching preview exactly
   const exportOptions = {
-    quality: 0.95,
-    pixelRatio: 2, // 2x gives ultra-crisp rendering
+    quality: 0.98,
+    pixelRatio: 2, // 2x gives ultra-crisp retina rendering
+    width,
+    height,
     cacheBust: true,
     filter: (domNode) => {
       // Exclude controls or UI helpers with class 'no-export'
@@ -63,8 +79,16 @@ export const captureNodeToDataUrl = async (node, format = 'png', dimensionKey = 
     },
     style: {
       transform: 'none',
+      margin: '0',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
+      textRendering: 'optimizeLegibility',
     },
   };
+
+  if (format === 'jpg' || format === 'jpeg') {
+    exportOptions.backgroundColor = '#0a0a0a';
+  }
 
   try {
     if (format === 'jpg' || format === 'jpeg') {

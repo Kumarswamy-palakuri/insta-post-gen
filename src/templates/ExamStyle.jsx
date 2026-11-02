@@ -57,7 +57,7 @@ export default function ExamStyle({
         </div>
 
         <div className="text-right flex-shrink-0">
-          <div className="text-[9px] sm:text-[10px] font-bold text-indigo-400 uppercase tracking-wider whitespace-nowrap max-w-[105px] sm:max-w-[150px] truncate">
+          <div className="text-[9px] sm:text-[10px] font-bold text-indigo-400 uppercase tracking-wider whitespace-nowrap max-w-[160px] sm:max-w-[220px] truncate">
             {question.topic || 'General Studies'}
           </div>
           <div className="text-[9px] sm:text-[10px] font-mono font-semibold text-slate-300 whitespace-nowrap">
@@ -69,11 +69,11 @@ export default function ExamStyle({
       {/* Main Question Body */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
         {/* Exam Section Tag */}
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="px-2 py-0.2 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">
+        <div className="flex items-center justify-between mb-1.5 flex-shrink-0">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-950/80 text-indigo-300 border border-indigo-700/50 whitespace-nowrap flex-shrink-0 select-none">
             {isAnswerMode ? 'OFFICIAL KEY & SOLUTION' : 'EXAM QUESTION PAPER'}
           </span>
-          <span className="text-[10px] font-mono text-slate-400">MARKS: 2.0 • NEG: 0.66</span>
+          <span className="text-[10px] font-mono text-slate-400 whitespace-nowrap flex-shrink-0">MARKS: 2.0 • NEG: 0.66</span>
         </div>
 
         {/* Question Text with Q.XX prefix */}
