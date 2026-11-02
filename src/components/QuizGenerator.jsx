@@ -14,11 +14,13 @@ import {
   Zap,
   Clock,
   Timer,
-  CheckCircle2
+  CheckCircle2,
+  Calendar,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { generateQuestionsWithAI, getOfflineSampleQuestions } from '../services/aiService';
 import { getApiKey, incrementQuestionsGenerated, saveRecentQuiz } from '../utils/storage';
+import { getFormattedCurrentDate, getTodayQuizTopic } from '../utils/dateUtils';
 
 export const SUGGESTED_CATEGORIES = [
   'General Knowledge',
@@ -108,6 +110,13 @@ export default function QuizGenerator({
   const handleRandomTopic = () => {
     const randomPick = RANDOM_TOPIC_POOL[Math.floor(Math.random() * RANDOM_TOPIC_POOL.length)];
     setTopic(randomPick);
+    setSelectedCategory('Custom Topic');
+  };
+
+  // Pick today's date-based history & current affairs quiz topic
+  const handleTodayDateQuiz = () => {
+    const todayTopic = getTodayQuizTopic();
+    setTopic(todayTopic);
     setSelectedCategory('Custom Topic');
   };
 
