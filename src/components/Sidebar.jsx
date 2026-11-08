@@ -142,24 +142,16 @@ export default function Sidebar({
           {/* API Status Pill */}
           <div
             onClick={() => onNavigate('settings')}
-            className={`p-3 rounded-xl border cursor-pointer transition ${
-              hasApiKey
-                ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300 hover:bg-emerald-950/50'
-                : 'bg-amber-950/30 border-amber-500/30 text-amber-300 hover:bg-amber-950/50'
-            }`}
+            className="p-3 rounded-xl border cursor-pointer transition bg-emerald-950/30 border-emerald-500/30 text-emerald-300 hover:bg-emerald-950/50"
           >
             <div className="flex items-center space-x-2">
-              {hasApiKey ? (
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              ) : (
-                <ShieldAlert className="w-4 h-4 text-amber-400" />
-              )}
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <div className="text-[11px] font-bold">
-                {hasApiKey ? 'Gemini AI Connected' : 'Demo Mode (No API Key)'}
+                {hasApiKey ? 'Custom Gemini Key' : 'Server AI Engine Active'}
               </div>
             </div>
             <div className="text-[10px] text-slate-400 mt-1 pl-6">
-              {hasApiKey ? 'Ready for infinite topics' : 'Tap to configure key in Settings'}
+              {hasApiKey ? 'Using client API key override' : 'Local / Netlify Server AI'}
             </div>
           </div>
 

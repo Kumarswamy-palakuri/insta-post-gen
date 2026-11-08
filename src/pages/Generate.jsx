@@ -59,18 +59,12 @@ export default function Generate({
 
     setIsRegenerating(true);
     try {
-      const hasKey = Boolean(getApiKey());
-      let newQ;
-      if (hasKey) {
-        newQ = await regenerateSingleQuestionWithAI({
-          topic: qToReplace.topic,
-          difficulty: qToReplace.difficulty,
-          language: qToReplace.language,
-          excludeQuestion: qToReplace.question,
-        });
-      } else {
-        newQ = getOfflineSampleQuestion(qToReplace.topic, qToReplace.difficulty, qToReplace.language);
-      }
+      const newQ = await regenerateSingleQuestionWithAI({
+        topic: qToReplace.topic,
+        difficulty: qToReplace.difficulty,
+        language: qToReplace.language,
+        excludeQuestion: qToReplace.question,
+      });
 
       const updated = [...questions];
       updated[index] = newQ;

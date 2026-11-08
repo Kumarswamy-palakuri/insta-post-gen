@@ -6,17 +6,19 @@ A modern, responsive, frontend-only web application built with **React.js**, **V
 
 ## 🚀 Key Features
 
-### 1. Pure Frontend Architecture
-- **No Backend Required**: Runs 100% inside the browser using direct Gemini REST API calls.
-- **LocalStorage Persistence**: Saves API credentials, questions, history, templates, and branding preferences locally.
-- **Zero Configuration Setup**: Includes an offline demo mode with sample quiz questions across multiple categories for immediate testing without an API key.
+### 1. Serverless & Local AI Architecture
+- **Zero Direct Client API Calls**: The client never calls Google Gemini directly with exposed keys. All generation requests route through `/api/generate-quiz`.
+- **Local Vite Dev Server**: In local development (`npm run dev`), Vite's dev server middleware emulates the backend function and securely loads `GEMINI_API_KEY` from `.env`.
+- **Netlify Serverless Ready**: Production deployments on Netlify automatically use `netlify/functions/generate-quiz.js` and `netlify.toml` with server-side environment variables.
+- **LocalStorage Persistence**: Saves questions, history, templates, and branding preferences locally.
+- **Offline Verified Fallback**: Includes a verified sample questions library across multiple categories if no API key is configured.
 
-### 2. Google Gemini API Integration (`src/services/aiService.js`)
-- **Direct REST Calls**: Connects straight to `https://generativelanguage.googleapis.com/v1beta/models/...`.
-- **Model Choice**: Supports `Gemini 1.5 Flash` (recommended & ultra-fast), `Gemini 2.0 Flash`, and `Gemini 1.5 Pro`.
+### 2. Google Gemini AI Engine
+- **Server-Side API Integration**: Handled securely on the server via `/.netlify/functions/generate-quiz` or `/api/generate-quiz`.
+- **Model Choice**: Supports `Gemini 2.0 Flash` (recommended & ultra-fast), `Gemini 1.5 Flash`, and `Gemini 1.5 Pro`.
 - **Structured JSON Engine**: Enforces strict JSON schema validation, automatic duplicate prevention, and distraction option balancing.
-- **Single Question Regeneration**: Regenerate any question independently with AI.
-- **Connection Diagnostics**: Test API connection with real-time latency and status feedback in Settings.
+- **Single Question Regeneration**: Regenerate any question independently via serverless endpoint.
+- **Connection Diagnostics**: Test connection and model availability directly from Settings.
 
 ### 3. Instagram Post Generator & 8 Premium Templates
 Supports all standard Instagram formats:

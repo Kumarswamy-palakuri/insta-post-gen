@@ -74,22 +74,17 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
 
   // Handle Discover Models
   const handleDiscoverModels = async () => {
-    if (!apiKeyInput.trim()) {
-      setStatusMessage('Please enter an API key first.');
-      return;
-    }
-
     setIsDiscovering(true);
-    setStatusMessage('Querying Google ModelService.ListModels...');
+    setStatusMessage('Querying available models from AI server...');
 
     try {
       const models = await listAvailableModels(apiKeyInput.trim());
       setDetectedModels(models);
       if (models.length > 0) {
-        setStatusMessage(`Found ${models.length} generateContent models supported by your key.`);
+        setStatusMessage(`Loaded ${models.length} generateContent models from server.`);
         if (showNotification) showNotification(`Loaded ${models.length} supported models!`, 'success');
       } else {
-        setStatusMessage('No generateContent models found for this key.');
+        setStatusMessage('No generateContent models found.');
       }
     } catch (err) {
       setStatusMessage(`Failed to list models: ${err.message}`);
@@ -101,14 +96,8 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
 
   // Handle Test Connection
   const handleTestConnection = async () => {
-    if (!apiKeyInput.trim()) {
-      setConnectionStatus('error');
-      setStatusMessage('Please enter an API key first.');
-      return;
-    }
-
     setConnectionStatus('testing');
-    setStatusMessage('Validating API key and discovering supported models...');
+    setStatusMessage('Testing connection to Local / Netlify AI Server...');
 
     const result = await testApiConnection(apiKeyInput.trim(), selectedModel);
 
@@ -119,7 +108,9 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
     if (result.success) {
       setConnectionStatus('connected');
       setStatusMessage(result.message);
-      setApiKey(apiKeyInput.trim());
+      if (apiKeyInput.trim()) {
+        setApiKey(apiKeyInput.trim());
+      }
       if (result.activeModel) {
         setModel(result.activeModel);
         setSelectedModel(result.activeModel);
@@ -226,8 +217,8 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
               <KeyRound className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Google Gemini API Credentials</h3>
-              <p className="text-xs text-slate-400">Direct REST API connection for question generation</p>
+              <h3 className="text-base font-bold text-white">AI Engine & Serverless API Configuration</h3>
+              <p className="text-xs text-slate-400">Powered by Local Vite Server & Netlify Serverless Function (/api/generate-quiz)</p>
             </div>
           </div>
 
@@ -261,15 +252,18 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
 
         {/* API Key Input */}
         <div>
-          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-            Gemini API Key
+          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+            Custom Gemini API Key Override (Optional)
           </label>
+          <p className="text-[11px] text-slate-400 mb-2">
+            The server automatically uses <code className="text-brand-300 bg-slate-800 px-1 py-0.5 rounded">GEMINI_API_KEY</code> from your <code className="text-brand-300 bg-slate-800 px-1 py-0.5 rounded">.env</code> file or Netlify environment variables. Enter a custom key below only if you want to override the server key from your browser.
+          </p>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="password"
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
-              placeholder="AIzaSy..."
+              placeholder="Leave empty to use server GEMINI_API_KEY..."
               className="flex-1 px-4 py-2.5 bg-slate-800 rounded-xl border border-slate-700 text-white font-mono text-xs focus:outline-none focus:border-brand-500"
             />
             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
@@ -278,9 +272,10 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
                 onClick={handleTestConnection}
                 disabled={connectionStatus === 'testing'}
                 className="flex-1 sm:flex-initial justify-center px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-bold text-slate-200 transition flex items-center space-x-1.5"
+                title="Test connection using server environment key or custom override"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${connectionStatus === 'testing' ? 'animate-spin' : ''}`} />
-                <span>Test</span>
+                <span>Test Connection</span>
               </button>
               <button
                 type="button"
@@ -295,7 +290,7 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
                   type="button"
                   onClick={handleRemoveKey}
                   className="px-3 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold transition flex items-center justify-center"
-                  title="Remove Key"
+                  title="Remove Custom Key"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

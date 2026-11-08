@@ -168,23 +168,12 @@ export default function QuizGenerator({
     }, 250);
 
     try {
-      let questions = [];
-
-      // Check if API key is present
-      if (hasApiKey) {
-        questions = await generateQuestionsWithAI({
-          topic: topic.trim(),
-          difficulty,
-          language,
-          count: questionCount,
-        });
-      } else {
-        // Fallback demo/sample generator
-        questions = getOfflineSampleQuestions(topic.trim(), questionCount, difficulty, language);
-        if (showNotification) {
-          showNotification('Generated in Demo Mode. Connect your Gemini API Key in Settings for unlimited AI topics!', 'info');
-        }
-      }
+      const questions = await generateQuestionsWithAI({
+        topic: topic.trim(),
+        difficulty,
+        language,
+        count: questionCount,
+      });
 
       if (questions && questions.length > 0) {
         // Increment stats
@@ -232,28 +221,25 @@ export default function QuizGenerator({
 
   return (
     <div className="bg-slate-900/95 rounded-2xl sm:rounded-3xl border border-slate-800 p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-6">
-      {/* Top Banner if API Key is not set */}
-      {!hasApiKey && (
-        <div className="p-3.5 sm:p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-200">
-          <div className="flex items-start space-x-2.5">
-            <KeyRound className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-amber-400">
-                Gemini API Key Recommended
-              </div>
-              <p className="text-xs text-amber-200/90 mt-0.5 leading-relaxed">
-                Connect your free Google Gemini API key in Settings for unlimited custom AI topics. Running in Demo Mode with offline library.
-              </p>
-            </div>
+      {/* AI Server Status Banner */}
+      <div className="p-3 sm:p-3.5 rounded-xl bg-brand-500/10 border border-brand-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-brand-200 text-xs">
+        <div className="flex items-center space-x-2">
+          <Zap className="w-4 h-4 text-brand-400 flex-shrink-0" />
+          <div>
+            <span className="font-bold text-white">AI Engine Active: </span>
+            <span className="text-brand-300">
+              {hasApiKey ? 'Using Custom API Key Override' : 'Powered by Local / Netlify Serverless AI'}
+            </span>
           </div>
-          <button
-            onClick={onNavigateToSettings}
-            className="w-full sm:w-auto text-center px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold transition flex-shrink-0 shadow-sm"
-          >
-            Configure Key
-          </button>
         </div>
-      )}
+        <button
+          type="button"
+          onClick={onNavigateToSettings}
+          className="text-[11px] font-semibold text-brand-400 hover:text-brand-300 underline underline-offset-2 flex-shrink-0"
+        >
+          {hasApiKey ? 'Manage Key' : 'Configure Server Key'}
+        </button>
+      </div>
 
       {/* Form Section */}
       <form onSubmit={handleGenerate} className="space-y-4 sm:space-y-6">
