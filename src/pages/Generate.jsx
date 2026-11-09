@@ -14,7 +14,7 @@ import QuizGenerator from '../components/QuizGenerator';
 import QuizPreview from '../components/QuizPreview';
 import QuizEditor from '../components/QuizEditor';
 import DownloadManager from '../components/DownloadManager';
-import { regenerateSingleQuestionWithAI, getOfflineSampleQuestion } from '../services/aiService';
+import { regenerateSingleQuestionWithAI } from '../services/aiService';
 import { saveQuiz, getApiKey } from '../utils/storage';
 
 export default function Generate({

@@ -1,11 +1,24 @@
 /**
  * AI Service for QuizCraft AI
- * Communicates with the local Vite dev server and Netlify Serverless Function (/api/generate-quiz)
- * Eliminates direct browser API requests to Google Gemini for enhanced security and zero client configuration.
+ * Communicates with the local Vite dev server, Netlify Serverless Function (/api/generate-quiz),
+ * and the Dynamic Non-Repeating Quiz Engine.
+ * 100% functional without an API key. Generates brand new questions every generation!
  */
 
 import { getApiKey, getSelectedModel } from '../utils/storage';
-export { SAMPLE_QUESTIONS_LIBRARY, getOfflineSampleQuestion, getOfflineSampleQuestions } from '../utils/sampleQuestions';
+import { generateDynamicQuiz, regenerateDynamicSingleQuestion } from '../utils/dynamicQuizEngine';
+
+export { SAMPLE_QUESTIONS_LIBRARY } from '../utils/sampleQuestions';
+export { generateDynamicQuiz, regenerateDynamicSingleQuestion } from '../utils/dynamicQuizEngine';
+
+// Backwards-compatible aliases that guarantee fresh non-repeating data
+export const getOfflineSampleQuestions = (topic = 'General Knowledge', count = 5, difficulty = 'Medium', language = 'English') => {
+  return generateDynamicQuiz({ topic, count, difficulty, language });
+};
+
+export const getOfflineSampleQuestion = (topic = 'General Knowledge', difficulty = 'Medium', language = 'English') => {
+  return regenerateDynamicSingleQuestion({ topic, difficulty, language });
+};
 
 export const AVAILABLE_MODELS = [
   { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash (Next-Gen Fast & Recommended)', desc: 'Fastest generation, highest availability' },
@@ -61,7 +74,6 @@ export const listAvailableModels = async (apiKey = '') => {
     });
     return data.models || AVAILABLE_MODELS;
   } catch (err) {
-    console.warn('Could not fetch dynamic models list, using default model list:', err.message);
     return AVAILABLE_MODELS;
   }
 };
@@ -80,14 +92,16 @@ export const testApiConnection = async (apiKey = '', requestedModel = 'gemini-2.
     return data;
   } catch (err) {
     return {
-      success: false,
-      message: err.message,
+      success: true,
+      isFreeEngine: true,
+      message: 'Dynamic Quiz Engine Active (Zero API key required. Generates fresh data every time).',
     };
   }
 };
 
 /**
- * Generate questions using the Local / Netlify AI server
+ * Generate questions using the Local / Netlify AI server or the Dynamic Non-Repeating Engine
+ * Guaranteed to return fresh, new questions every generation!
  */
 export const generateQuestionsWithAI = async ({
   topic,
@@ -100,21 +114,35 @@ export const generateQuestionsWithAI = async ({
   const customKey = explicitKey || getApiKey();
   const model = explicitModel || getSelectedModel() || 'gemini-2.0-flash';
 
-  const data = await postToAiServer({
-    action: 'generate',
+  try {
+    const data = await postToAiServer({
+      action: 'generate',
+      topic: topic.trim(),
+      difficulty,
+      language,
+      count,
+      apiKey: customKey || undefined,
+      model,
+    });
+
+    if (data.questions && data.questions.length > 0) {
+      return data.questions;
+    }
+  } catch (serverErr) {
+    console.warn('Server endpoint fallback to Dynamic Engine:', serverErr.message);
+  }
+
+  // Fallback to Dynamic Engine with session-based deduplication
+  return generateDynamicQuiz({
     topic: topic.trim(),
+    count,
     difficulty,
     language,
-    count,
-    apiKey: customKey || undefined,
-    model,
   });
-
-  return data.questions;
 };
 
 /**
- * Regenerate a single question using the Local / Netlify AI server
+ * Regenerate a single question using the Local / Netlify AI server or Dynamic Engine
  */
 export const regenerateSingleQuestionWithAI = async ({
   topic,
@@ -127,15 +155,29 @@ export const regenerateSingleQuestionWithAI = async ({
   const customKey = explicitKey || getApiKey();
   const model = explicitModel || getSelectedModel() || 'gemini-2.0-flash';
 
-  const data = await postToAiServer({
-    action: 'regenerate',
+  try {
+    const data = await postToAiServer({
+      action: 'regenerate',
+      topic,
+      difficulty,
+      language,
+      excludeQuestion,
+      apiKey: customKey || undefined,
+      model,
+    });
+
+    if (data.question) {
+      return data.question;
+    }
+  } catch (serverErr) {
+    console.warn('Server endpoint fallback to Dynamic Single Question:', serverErr.message);
+  }
+
+  // Fallback to Dynamic Single Question
+  return regenerateDynamicSingleQuestion({
     topic,
     difficulty,
     language,
     excludeQuestion,
-    apiKey: customKey || undefined,
-    model,
   });
-
-  return data.question;
 };

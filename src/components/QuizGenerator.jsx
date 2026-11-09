@@ -18,7 +18,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { generateQuestionsWithAI, getOfflineSampleQuestions } from '../services/aiService';
+import { generateQuestionsWithAI } from '../services/aiService';
 import { getApiKey, incrementQuestionsGenerated, saveRecentQuiz } from '../utils/storage';
 import { getFormattedCurrentDate, getTodayQuizTopic } from '../utils/dateUtils';
 
@@ -78,8 +78,10 @@ export default function QuizGenerator({
   const [activeStage, setActiveStage] = useState('');
   const timerIntervalRef = useRef(null);
 
+  const hasApiKey = Boolean(getApiKey());
+
   const GENERATION_STAGES = [
-    'Connecting to Gemini AI & analyzing topic curriculum...',
+    hasApiKey ? 'Connecting to Gemini AI & analyzing topic curriculum...' : 'Activating Dynamic AI Engine & analyzing curriculum...',
     'Drafting factually verified questions & distractors...',
     'Validating single-answer correctness & difficulty...',
     'Writing comprehensive educational solution explanations...',
@@ -93,8 +95,6 @@ export default function QuizGenerator({
       }
     };
   }, []);
-
-  const hasApiKey = Boolean(getApiKey());
 
   // Handle category selection
   const handleSelectCategory = (cat) => {
@@ -221,23 +221,23 @@ export default function QuizGenerator({
 
   return (
     <div className="bg-slate-900/95 rounded-2xl sm:rounded-3xl border border-slate-800 p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-6">
-      {/* AI Server Status Banner */}
-      <div className="p-3 sm:p-3.5 rounded-xl bg-brand-500/10 border border-brand-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-brand-200 text-xs">
+      {/* AI Engine Status Banner */}
+      <div className="p-3 sm:p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-brand-950/40 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs">
         <div className="flex items-center space-x-2">
-          <Zap className="w-4 h-4 text-brand-400 flex-shrink-0" />
+          <Zap className="w-4 h-4 text-emerald-400 flex-shrink-0" />
           <div>
-            <span className="font-bold text-white">AI Engine Active: </span>
-            <span className="text-brand-300">
-              {hasApiKey ? 'Using Custom API Key Override' : 'Powered by Local / Netlify Serverless AI'}
+            <span className="font-bold text-white">Generation Engine Active: </span>
+            <span className="text-emerald-300">
+              {hasApiKey ? 'Using Custom Gemini API Key' : 'Zero API Key Required • Fresh Unique Questions Every Generation'}
             </span>
           </div>
         </div>
         <button
           type="button"
           onClick={onNavigateToSettings}
-          className="text-[11px] font-semibold text-brand-400 hover:text-brand-300 underline underline-offset-2 flex-shrink-0"
+          className="text-[11px] font-semibold text-slate-400 hover:text-white underline underline-offset-2 flex-shrink-0"
         >
-          {hasApiKey ? 'Manage Key' : 'Configure Server Key'}
+          {hasApiKey ? 'Manage Key' : 'Settings'}
         </button>
       </div>
 

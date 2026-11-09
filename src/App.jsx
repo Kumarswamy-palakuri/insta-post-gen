@@ -25,7 +25,7 @@ import {
   incrementQuestionsGenerated,
   saveRecentQuiz,
 } from './utils/storage';
-import { getOfflineSampleQuestions, SAMPLE_QUESTIONS_LIBRARY } from './services/aiService';
+import { generateDynamicQuiz } from './services/aiService';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -49,9 +49,17 @@ export default function App() {
     customTextColor: '',
   });
 
-  // Active Questions in Studio (Default sample questions loaded for instant interactive delight!)
+  // Active Questions in Studio (Dynamically generated fresh questions on initial launch)
   const [questions, setQuestions] = useState(() => {
-    return SAMPLE_QUESTIONS_LIBRARY['Indian History'] || [];
+    const starterCategories = [
+      'Indian History',
+      'Geography',
+      'Indian Polity',
+      'General Knowledge',
+      'Science',
+    ];
+    const pickTopic = starterCategories[Math.floor(Math.random() * starterCategories.length)];
+    return generateDynamicQuiz({ topic: pickTopic, count: 5, difficulty: 'Medium', language: 'English' });
   });
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -83,11 +91,27 @@ export default function App() {
     setIsDarkMode((prev) => !prev);
   };
 
-  // 1-Click Instant Random Quiz generator
+  // 1-Click Instant Random Quiz generator (Zero API Key required, guaranteed fresh dynamic questions)
   const handleQuickGenerateRandom = () => {
-    const categories = Object.keys(SAMPLE_QUESTIONS_LIBRARY);
+    const categories = [
+      'Indian History',
+      'Geography',
+      'Indian Polity',
+      'Science',
+      'Computer Knowledge',
+      'General Knowledge',
+      'Current Affairs',
+      'Economics',
+      'Sports',
+      'English Grammar',
+    ];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    const generated = getOfflineSampleQuestions(randomCategory, 3, 'Medium', 'English');
+    const generated = generateDynamicQuiz({
+      topic: randomCategory,
+      count: 3,
+      difficulty: 'Medium',
+      language: 'English',
+    });
 
     setQuestions(generated);
     setCurrentQuestionIndex(0);
@@ -103,7 +127,7 @@ export default function App() {
     });
 
     setCurrentPage('generate');
-    addNotification(`Loaded 3 questions on "${randomCategory}"!`, 'success');
+    addNotification(`Generated 3 fresh questions on "${randomCategory}"!`, 'success');
   };
 
   // Load a saved or recent quiz into studio
