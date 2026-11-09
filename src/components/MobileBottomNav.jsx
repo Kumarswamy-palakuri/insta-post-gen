@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  LayoutDashboard,
-  Sparkles,
+  Code2,
   Palette,
   Bookmark,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  LayoutDashboard
 } from 'lucide-react';
 
 export default function MobileBottomNav({
@@ -13,9 +13,9 @@ export default function MobileBottomNav({
   isDarkMode,
 }) {
   const navItems = [
-    { id: 'home', label: 'Home', icon: LayoutDashboard },
-    { id: 'generate', label: 'Studio', icon: Sparkles, badge: 'AI' },
+    { id: 'generate', label: 'Studio', icon: Code2 },
     { id: 'templates', label: 'Templates', icon: Palette },
+    { id: 'home', label: 'Home', icon: LayoutDashboard },
     { id: 'saved', label: 'Saved', icon: Bookmark },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
@@ -55,12 +55,6 @@ export default function MobileBottomNav({
                 >
                   <Icon className="w-5 h-5" />
                 </div>
-
-                {item.badge && !isActive && (
-                  <span className="absolute -top-1 -right-2 px-1 py-0.2 rounded-full text-[8px] font-black uppercase bg-brand-500 text-white">
-                    {item.badge}
-                  </span>
-                )}
               </div>
 
               <span className={`text-[10px] mt-0.5 tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>
@@ -77,4 +71,3 @@ export default function MobileBottomNav({
     </nav>
   );
 }
-

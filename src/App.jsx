@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   Menu,
-  Sparkles,
-  KeyRound,
   Sun,
   Moon,
   CheckCircle2,
   AlertCircle,
   Info,
   X,
-  Shuffle
+  Code2,
+  Palette
 } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import MobileBottomNav from './components/MobileBottomNav';
@@ -21,14 +20,11 @@ import SettingsPage from './pages/Settings';
 import {
   getPreferences,
   savePreferences,
-  getApiKey,
-  incrementQuestionsGenerated,
-  saveRecentQuiz,
 } from './utils/storage';
-import { generateDynamicQuiz } from './services/aiService';
+import { DEFAULT_SAMPLE_QUIZ } from './utils/sampleQuizJson';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('generate');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -49,18 +45,8 @@ export default function App() {
     customTextColor: '',
   });
 
-  // Active Questions in Studio (Dynamically generated fresh questions on initial launch)
-  const [questions, setQuestions] = useState(() => {
-    const starterCategories = [
-      'Indian History',
-      'Geography',
-      'Indian Polity',
-      'General Knowledge',
-      'Science',
-    ];
-    const pickTopic = starterCategories[Math.floor(Math.random() * starterCategories.length)];
-    return generateDynamicQuiz({ topic: pickTopic, count: 5, difficulty: 'Medium', language: 'English' });
-  });
+  // Active Questions in Studio (Default clean sample loaded for instant visual preview)
+  const [questions, setQuestions] = useState(() => DEFAULT_SAMPLE_QUIZ);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   // Toast Notifications
@@ -91,45 +77,6 @@ export default function App() {
     setIsDarkMode((prev) => !prev);
   };
 
-  // 1-Click Instant Random Quiz generator (Zero API Key required, guaranteed fresh dynamic questions)
-  const handleQuickGenerateRandom = () => {
-    const categories = [
-      'Indian History',
-      'Geography',
-      'Indian Polity',
-      'Science',
-      'Computer Knowledge',
-      'General Knowledge',
-      'Current Affairs',
-      'Economics',
-      'Sports',
-      'English Grammar',
-    ];
-    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    const generated = generateDynamicQuiz({
-      topic: randomCategory,
-      count: 3,
-      difficulty: 'Medium',
-      language: 'English',
-    });
-
-    setQuestions(generated);
-    setCurrentQuestionIndex(0);
-    incrementQuestionsGenerated(generated.length);
-    saveRecentQuiz({
-      id: `quick_${Date.now()}`,
-      topic: randomCategory,
-      difficulty: 'Medium',
-      language: 'English',
-      questionsCount: generated.length,
-      createdAt: new Date().toISOString(),
-      questions: generated,
-    });
-
-    setCurrentPage('generate');
-    addNotification(`Generated 3 fresh questions on "${randomCategory}"!`, 'success');
-  };
-
   // Load a saved or recent quiz into studio
   const handleLoadQuizIntoStudio = (quiz) => {
     if (quiz.questions && quiz.questions.length > 0) {
@@ -150,8 +97,6 @@ export default function App() {
     addNotification(`Applied template: ${templateId}`, 'info');
   };
 
-  const hasApiKey = Boolean(getApiKey());
-
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-100 text-slate-800'}`}>
       {/* Sidebar Navigation */}
@@ -160,7 +105,6 @@ export default function App() {
         onNavigate={setCurrentPage}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        hasApiKey={hasApiKey}
         isDarkMode={isDarkMode}
         onToggleTheme={toggleTheme}
       />
@@ -185,7 +129,7 @@ export default function App() {
               <span className="text-slate-400 hidden xs:inline">QuizCraft</span>
               <span className="text-slate-600 hidden xs:inline">/</span>
               <span className="capitalize text-brand-400 truncate max-w-[130px] sm:max-w-none">
-                {currentPage === 'generate' ? 'Studio' : currentPage}
+                {currentPage === 'generate' ? 'JSON to Frame Studio' : currentPage}
               </span>
             </div>
           </div>
@@ -193,21 +137,21 @@ export default function App() {
           {/* Quick Header Actions */}
           <div className="flex items-center space-x-1.5 sm:space-x-2.5">
             <button
-              onClick={handleQuickGenerateRandom}
-              title="1-Click Random Quiz"
+              onClick={() => setCurrentPage('templates')}
+              title="Browse 8 Post Templates"
               className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition flex items-center space-x-1 sm:space-x-1.5 border border-slate-700/80"
             >
-              <Shuffle className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Random Quiz</span>
+              <Palette className="w-3.5 h-3.5 text-purple-400" />
+              <span className="hidden sm:inline">8 Templates</span>
             </button>
 
             <button
               onClick={() => setCurrentPage('generate')}
               className="px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-bold transition flex items-center space-x-1 sm:space-x-1.5 shadow-md shadow-brand-600/25"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">Create Post</span>
-              <span className="xs:hidden">Create</span>
+              <Code2 className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">JSON Studio</span>
+              <span className="xs:hidden">Studio</span>
             </button>
           </div>
         </header>
@@ -217,9 +161,7 @@ export default function App() {
           {currentPage === 'home' && (
             <Home
               onNavigate={setCurrentPage}
-              onQuickGenerateRandom={handleQuickGenerateRandom}
               onLoadRecentQuiz={handleLoadQuizIntoStudio}
-              hasApiKey={hasApiKey}
             />
           )}
 

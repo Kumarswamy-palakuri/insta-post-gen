@@ -149,6 +149,10 @@ export default function QuizEditor({
                 rows={3}
                 value={question.question || ''}
                 onChange={(e) => handleFieldChange('question', e.target.value)}
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+                spellCheck={false}
                 className="w-full px-3.5 py-2.5 bg-slate-800 rounded-xl border border-slate-700 text-white text-sm focus:outline-none focus:border-brand-500 transition leading-relaxed resize-none"
                 placeholder="Enter question text..."
               />
@@ -214,6 +218,10 @@ export default function QuizEditor({
                 rows={3}
                 value={question.explanation || ''}
                 onChange={(e) => handleFieldChange('explanation', e.target.value)}
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+                spellCheck={false}
                 className="w-full px-3.5 py-2.5 bg-slate-800 rounded-xl border border-slate-700 text-white text-sm focus:outline-none focus:border-brand-500 transition leading-relaxed resize-none"
                 placeholder="Explain why this answer is correct..."
               />

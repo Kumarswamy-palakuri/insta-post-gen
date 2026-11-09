@@ -27,8 +27,6 @@ export default function QuizPreview({
   onOpenEditor,
   onSaveQuiz,
   onOpenDownloadManager,
-  onRegenerateQuestion,
-  isRegenerating = false,
   showNotification,
 }) {
   const [viewMode, setViewMode] = useState('both'); // 'both' | 'question' | 'answer'
@@ -173,8 +171,6 @@ export default function QuizPreview({
             customization={customization}
             dimension={dimension}
             onEdit={onOpenEditor}
-            onRegenerate={onRegenerateQuestion}
-            isRegenerating={isRegenerating}
             showNotification={showNotification}
           />
         )}

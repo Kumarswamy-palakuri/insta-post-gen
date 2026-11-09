@@ -1,42 +1,31 @@
 import React from 'react';
 import {
   LayoutDashboard,
-  Sparkles,
+  Code2,
   Palette,
   Bookmark,
   Settings as SettingsIcon,
   Moon,
   Sun,
-  ShieldCheck,
-  ShieldAlert,
   X,
-  Compass,
-  Camera
+  Layers,
+  Sparkles
 } from 'lucide-react';
-
-const InstagramIcon = ({ className = "w-5 h-5" }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-  </svg>
-);
 
 export default function Sidebar({
   currentPage,
   onNavigate,
   isOpen,
   onClose,
-  hasApiKey,
   isDarkMode,
   onToggleTheme,
 }) {
   const navItems = [
-    { id: 'home', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'generate', label: 'Quiz Generator', icon: Sparkles, badge: 'AI' },
+    { id: 'generate', label: 'JSON to Frame', icon: Code2, badge: 'Studio' },
     { id: 'templates', label: 'Post Templates', icon: Palette, count: 8 },
-    { id: 'saved', label: 'Saved Quizzes', icon: Bookmark },
-    { id: 'settings', label: 'API & Settings', icon: SettingsIcon },
+    { id: 'home', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'saved', label: 'Saved Projects', icon: Bookmark },
+    { id: 'settings', label: 'Branding & Setup', icon: SettingsIcon },
   ];
 
   return (
@@ -58,7 +47,7 @@ export default function Sidebar({
         {/* Logo / Brand Header */}
         <div className="p-5 border-b border-slate-800 flex items-center justify-between">
           <div
-            onClick={() => onNavigate('home')}
+            onClick={() => onNavigate('generate')}
             className="flex items-center space-x-3 cursor-pointer group"
           >
             <img
@@ -69,10 +58,12 @@ export default function Sidebar({
             <div>
               <div className="font-black text-base tracking-tight text-white flex items-center space-x-1">
                 <span>QuizCraft</span>
-                <span className="text-brand-400">AI</span>
+                <span className="text-brand-400 text-xs px-1.5 py-0.5 rounded bg-brand-500/20 border border-brand-500/30">
+                  JSON
+                </span>
               </div>
               <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                Instagram Post Studio
+                JSON to Frame Studio
               </div>
             </div>
           </div>
@@ -139,19 +130,19 @@ export default function Sidebar({
 
         {/* Bottom Status & Theme Card */}
         <div className="p-4 border-t border-slate-800 space-y-3">
-          {/* API Status Pill */}
+          {/* Studio Status Pill */}
           <div
             onClick={() => onNavigate('settings')}
-            className="p-3 rounded-xl border cursor-pointer transition bg-emerald-950/30 border-emerald-500/30 text-emerald-300 hover:bg-emerald-950/50"
+            className="p-3 rounded-xl border cursor-pointer transition bg-slate-800/60 border-slate-700/80 hover:bg-slate-800 text-slate-200"
           >
             <div className="flex items-center space-x-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <Layers className="w-4 h-4 text-brand-400" />
               <div className="text-[11px] font-bold">
-                {hasApiKey ? 'Custom Gemini Key' : 'Server AI Engine Active'}
+                JSON to Frame Active
               </div>
             </div>
             <div className="text-[10px] text-slate-400 mt-1 pl-6">
-              {hasApiKey ? 'Using client API key override' : 'Local / Netlify Server AI'}
+              8 Instagram Templates Ready
             </div>
           </div>
 
@@ -165,7 +156,7 @@ export default function Sidebar({
               {isDarkMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5" />}
               <span className="text-[11px] font-semibold">{isDarkMode ? 'Light UI' : 'Dark UI'}</span>
             </button>
-            <span className="text-[10px] font-mono text-slate-500">v1.0.0 Frontend</span>
+            <span className="text-[10px] font-mono text-slate-500">v2.0 JSON</span>
           </div>
         </div>
       </aside>

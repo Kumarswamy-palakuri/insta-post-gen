@@ -12,8 +12,6 @@ export default function QuestionCard({
   customization = {},
   dimension = 'square',
   onEdit = null,
-  onRegenerate = null,
-  isRegenerating = false,
   showNotification = null,
 }) {
   const cardRef = useRef(null);
@@ -72,18 +70,6 @@ export default function QuestionCard({
         </div>
 
         <div className="flex items-center space-x-1.5">
-          {onRegenerate && (
-            <button
-              onClick={() => onRegenerate(questionIndex)}
-              disabled={isRegenerating}
-              title="Regenerate this question with AI"
-              className="p-1.5 rounded-lg bg-slate-700/70 hover:bg-slate-700 text-slate-300 hover:text-white transition disabled:opacity-50 text-xs flex items-center space-x-1"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRegenerating ? 'animate-spin text-brand-400' : ''}`} />
-              <span className="hidden sm:inline">Regenerate</span>
-            </button>
-          )}
-
           {onEdit && (
             <button
               onClick={() => onEdit(questionIndex)}

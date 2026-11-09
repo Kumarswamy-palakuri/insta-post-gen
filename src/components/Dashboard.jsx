@@ -1,30 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Sparkles,
-  Shuffle,
+  Code2,
   Download,
   Bookmark,
   Palette,
-  KeyRound,
-  TrendingUp,
+  Sliders,
   ArrowRight,
   Clock,
   Layers,
-  CheckCircle2,
-  Image as ImageIcon,
-  ExternalLink,
   ChevronRight,
-  Flame,
-  FileCheck
+  FileCode,
+  Image as ImageIcon
 } from 'lucide-react';
 import { getStats, getRecentQuizzes, getDownloadHistory } from '../utils/storage';
-import { TEMPLATES } from '../templates';
 
 export default function Dashboard({
   onNavigate,
-  onQuickGenerateRandom,
   onLoadRecentQuiz,
-  hasApiKey,
 }) {
   const [stats, setStats] = useState({ totalQuestionsGenerated: 0, totalImagesDownloaded: 0, totalSavedQuizzes: 0 });
   const [recentQuizzes, setRecentQuizzes] = useState([]);
@@ -45,20 +37,19 @@ export default function Dashboard({
 
         <div className="relative z-10 max-w-2xl space-y-3 sm:space-y-4">
           <div className="inline-flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-brand-500/20 text-brand-300 border border-brand-400/30">
-            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-brand-400" />
-            <span>AI Instagram Quiz Post Studio</span>
+            <Code2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-brand-400" />
+            <span>JSON to Frame Studio</span>
           </div>
 
           <h1 className="text-xl sm:text-4xl font-black text-white tracking-tight leading-snug sm:leading-tight">
-            Create Viral Educational <br className="hidden sm:inline" />
+            Transform Quiz JSON into <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-brand-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
-              Instagram Quizzes in Seconds
+              Viral Instagram Post Frames
             </span>
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Generate factually accurate multiple-choice questions on any topic with Google Gemini AI.
-            Instantly format them into 8 Instagram-ready templates with Question & Answer Reveal pairs.
+            Paste or upload any quiz JSON, and instantly convert it into 8 high-conversion Instagram-ready templates with Question & Answer Reveal pairs.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1 sm:pt-2">
@@ -66,32 +57,32 @@ export default function Dashboard({
               onClick={() => onNavigate('generate')}
               className="px-4 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 hover:from-brand-400 hover:to-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-brand-500/25 transition flex items-center justify-center space-x-2 active:scale-95"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Generate New Quiz</span>
+              <Code2 className="w-4 h-4" />
+              <span>Open JSON to Frame Studio</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={onQuickGenerateRandom}
+              onClick={() => onNavigate('templates')}
               className="px-4 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow-sm active:scale-95"
             >
-              <Shuffle className="w-4 h-4 text-amber-400" />
-              <span>1-Click Random Quiz</span>
+              <Palette className="w-4 h-4 text-purple-400" />
+              <span>Explore 8 Templates</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Statistics Cards (Compact 3-box row on Mobile) */}
+      {/* Statistics Cards */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4">
         <div className="bg-slate-900 rounded-xl sm:rounded-2xl border border-slate-800 p-2.5 sm:p-5 shadow-xl flex flex-col sm:flex-row items-center sm:space-x-4 text-center sm:text-left">
           <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center border border-brand-500/20 mb-1.5 sm:mb-0">
-            <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
+            <Layers className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
           <div className="min-w-0">
             <div className="text-base sm:text-2xl font-black text-white">{stats.totalQuestionsGenerated}</div>
             <div className="text-[9px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-0.5 truncate">
-              Generated
+              Frames Created
             </div>
           </div>
         </div>
@@ -115,7 +106,7 @@ export default function Dashboard({
           <div className="min-w-0">
             <div className="text-base sm:text-2xl font-black text-white">{stats.totalSavedQuizzes}</div>
             <div className="text-[9px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-0.5 truncate">
-              Saved
+              Saved Projects
             </div>
           </div>
         </div>
@@ -128,13 +119,13 @@ export default function Dashboard({
           className="group p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand-500/60 cursor-pointer transition shadow-xl"
         >
           <div className="w-10 h-10 rounded-xl bg-brand-600/20 text-brand-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
-            <Sparkles className="w-5 h-5" />
+            <Code2 className="w-5 h-5" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-brand-300 transition">
-            Quiz Generator
+            JSON to Frame
           </h3>
           <p className="text-xs text-slate-400 mt-1">
-            Generate single or multi-question sets with custom topic, difficulty & language.
+            Paste or upload quiz JSON to generate Question & Answer Reveal frames.
           </p>
         </div>
 
@@ -149,7 +140,7 @@ export default function Dashboard({
             8 Post Templates
           </h3>
           <p className="text-xs text-slate-400 mt-1">
-            Black & Gold, Blue & Yellow, Minimal, Exam Style, and more high-conversion styles.
+            Black & Gold, Blue & Yellow, Minimal, Exam Style, and high-conversion styles.
           </p>
         </div>
 
@@ -161,7 +152,7 @@ export default function Dashboard({
             <Bookmark className="w-5 h-5" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition">
-            Saved Quizzes
+            Saved Projects
           </h3>
           <p className="text-xs text-slate-400 mt-1">
             Access your saved question libraries anytime and export fresh variations.
@@ -173,13 +164,13 @@ export default function Dashboard({
           className="group p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand-500/60 cursor-pointer transition shadow-xl"
         >
           <div className="w-10 h-10 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
-            <KeyRound className="w-5 h-5" />
+            <Sliders className="w-5 h-5" />
           </div>
           <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition">
-            API Configuration
+            Branding & Setup
           </h3>
           <p className="text-xs text-slate-400 mt-1">
-            Connect Gemini API key, test connection, customize branding handles & logo.
+            Customize default Instagram handle, watermarks, logo URL, and CTAs.
           </p>
         </div>
       </div>
@@ -192,7 +183,7 @@ export default function Dashboard({
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center space-x-2">
                 <Clock className="w-4 h-4 text-brand-400" />
-                <h3 className="text-sm font-bold text-white">Recently Generated Quizzes</h3>
+                <h3 className="text-sm font-bold text-white">Recent Saved Drafts</h3>
               </div>
               <span className="text-xs text-slate-500">{recentQuizzes.length} Drafts</span>
             </div>
@@ -200,7 +191,7 @@ export default function Dashboard({
             <div className="divide-y divide-slate-800/80 mt-2">
               {recentQuizzes.length === 0 ? (
                 <div className="py-8 text-center text-xs text-slate-400">
-                  No recent quizzes yet. Click "Generate New Quiz" above to create your first post!
+                  No saved drafts yet. Open JSON to Frame Studio to create your first post!
                 </div>
               ) : (
                 recentQuizzes.slice(0, 5).map((q) => (
@@ -251,7 +242,7 @@ export default function Dashboard({
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center space-x-2">
                 <Download className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-sm font-bold text-white">Recent Download History</h3>
+                <h3 className="text-sm font-bold text-white">Recent Export History</h3>
               </div>
               <span className="text-xs text-slate-500">{downloadHistory.length} Exports</span>
             </div>
@@ -259,7 +250,7 @@ export default function Dashboard({
             <div className="divide-y divide-slate-800/80 mt-2">
               {downloadHistory.length === 0 ? (
                 <div className="py-8 text-center text-xs text-slate-400">
-                  No images downloaded yet. Downloaded posts will be logged here for tracking.
+                  No images exported yet. Exported frames will be logged here for tracking.
                 </div>
               ) : (
                 downloadHistory.slice(0, 5).map((d) => (
@@ -292,11 +283,10 @@ export default function Dashboard({
           </div>
 
           <div className="pt-3 border-t border-slate-800 text-xs text-slate-500">
-            Images export at true 1080px resolution for high Instagram engagement.
+            Posts export at true 1080px resolution for high Instagram engagement.
           </div>
         </div>
       </div>
     </div>
   );
 }
-
