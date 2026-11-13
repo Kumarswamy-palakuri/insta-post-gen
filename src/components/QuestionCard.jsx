@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Download, RefreshCw, Copy, Check, Eye, Edit3, Image as ImageIcon } from 'lucide-react';
+import { Download, Copy, Check, Edit3, Image as ImageIcon, Flame } from 'lucide-react';
 import { getTemplateById } from '../templates';
 import { downloadSingleNode, DIMENSIONS_CONFIG } from '../utils/imageExport';
+import { generateSingleQuestionCaption } from '../utils/captionGenerator';
 
 export default function QuestionCard({
   question,
@@ -12,6 +13,7 @@ export default function QuestionCard({
   customization = {},
   dimension = 'square',
   onEdit = null,
+  onOpenCaptionModal = null,
   showNotification = null,
 }) {
   const cardRef = useRef(null);
@@ -47,14 +49,23 @@ export default function QuestionCard({
     }
   };
 
-  // Copy question text to clipboard for caption
+  // Copy viral question caption to clipboard
   const handleCopyText = () => {
-    const text = `🧠 QUIZ TIME: ${question.topic}\n\nQ: ${question.question}\n\nA) ${question.options.A}\nB) ${question.options.B}\nC) ${question.options.C}\nD) ${question.options.D}\n\n💬 Comment your answer below!\n\nFollow @${branding.handle || 'learn_in_a_minute'} for daily quizzes!\n#quiz #knowledge #education #upsc #ssc #gk`;
+    if (onOpenCaptionModal) {
+      onOpenCaptionModal(questionIndex);
+      return;
+    }
+    const text = generateSingleQuestionCaption({
+      question,
+      branding,
+      questionIndex,
+      totalQuestions,
+    });
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     if (showNotification) {
-      showNotification('Question caption copied to clipboard!', 'success');
+      showNotification('Viral caption with high-reach hashtags copied!', 'success');
     }
   };
 
@@ -83,11 +94,11 @@ export default function QuestionCard({
 
           <button
             onClick={handleCopyText}
-            title="Copy caption text for Instagram"
+            title="Copy viral Instagram caption with trending hashtags"
             className="p-1.5 rounded-lg bg-slate-700/70 hover:bg-slate-700 text-slate-300 hover:text-white transition text-xs flex items-center space-x-1"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">{copied ? 'Copied' : 'Caption'}</span>
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Flame className="w-3.5 h-3.5 text-amber-400" />}
+            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Viral Caption'}</span>
           </button>
         </div>
       </div>

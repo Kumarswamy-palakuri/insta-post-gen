@@ -9,10 +9,12 @@ import {
   Sparkles,
   Layers,
   FolderArchive,
-  Check
+  Check,
+  Flame
 } from 'lucide-react';
 import QuestionCard from './QuestionCard';
 import AnswerCard from './AnswerCard';
+import CaptionModal from './CaptionModal';
 import { DIMENSIONS_CONFIG } from '../utils/imageExport';
 
 export default function QuizPreview({
@@ -31,6 +33,7 @@ export default function QuizPreview({
 }) {
   const [viewMode, setViewMode] = useState('both'); // 'both' | 'question' | 'answer'
   const [isSaved, setIsSaved] = useState(false);
+  const [showCaptionModal, setShowCaptionModal] = useState(false);
 
   if (!questions || questions.length === 0) {
     return (
@@ -141,6 +144,15 @@ export default function QuizPreview({
           </div>
 
           <button
+            onClick={() => setShowCaptionModal(true)}
+            className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-rose-500/20 hover:from-amber-500/30 hover:to-rose-500/30 border border-rose-500/30 text-rose-300 hover:text-white text-xs font-bold transition flex items-center space-x-1.5 active:scale-95"
+            title="Open viral caption generator with trending hashtags"
+          >
+            <Flame className="w-3.5 h-3.5 text-rose-400" />
+            <span>Viral Caption</span>
+          </button>
+
+          <button
             onClick={handleSave}
             className="px-2.5 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-xs font-bold text-slate-200 transition flex items-center space-x-1 border border-slate-600 active:scale-95"
             title="Save quiz to library"
@@ -171,6 +183,7 @@ export default function QuizPreview({
             customization={customization}
             dimension={dimension}
             onEdit={onOpenEditor}
+            onOpenCaptionModal={() => setShowCaptionModal(true)}
             showNotification={showNotification}
           />
         )}
@@ -188,6 +201,17 @@ export default function QuizPreview({
           />
         )}
       </div>
+
+      {/* Viral Instagram Caption Modal */}
+      <CaptionModal
+        isOpen={showCaptionModal}
+        onClose={() => setShowCaptionModal(false)}
+        question={currentQ}
+        questions={questions}
+        questionIndex={currentQuestionIndex}
+        branding={branding}
+        showNotification={showNotification}
+      />
     </div>
   );
 }

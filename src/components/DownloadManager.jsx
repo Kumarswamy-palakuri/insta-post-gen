@@ -33,6 +33,14 @@ export default function DownloadManager({
   const TemplateComponent = templateObj.component;
   const dimConfig = DIMENSIONS_CONFIG[selectedDimension] || DIMENSIONS_CONFIG.square;
 
+  // Match exact preview dimensions (480px base width scaled to 1080px in capture)
+  const cardWidth = 480;
+  const cardHeight = selectedDimension === 'portrait'
+    ? 600
+    : selectedDimension === 'story'
+      ? 853.33
+      : 480;
+
   // Handle Full ZIP generation
   const handleExportZip = async () => {
     if (!questions || questions.length === 0) return;
@@ -41,6 +49,9 @@ export default function DownloadManager({
     setProgress({ current: 0, total: questions.length * 2, text: 'Preparing slides...' });
 
     try {
+      // Small pause to guarantee DOM and font render settled
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       const itemsToCapture = questions.map((q, idx) => {
         const questionNode = document.getElementById(`offscreen-q-${idx}`);
         const answerNode = document.getElementById(`offscreen-a-${idx}`);
@@ -247,22 +258,27 @@ export default function DownloadManager({
         </div>
       </div>
 
-      {/* Hidden Offscreen DOM Nodes for high-res rendering */}
+      {/* Hidden Render Container for pixel-perfect ZIP capture matching preview 1:1 */}
       <div
-        className="fixed -left-[9999px] top-0 opacity-0 pointer-events-none"
+        className="fixed top-0 left-0 pointer-events-none -z-50 overflow-hidden"
+        style={{
+          width: '480px',
+          height: `${cardHeight}px`,
+          opacity: 1,
+          visibility: 'visible',
+        }}
         aria-hidden="true"
       >
         {questions.map((q, idx) => (
-          <div key={`offscreen-group-${idx}`}>
-            {/* Offscreen Question Post */}
+          <React.Fragment key={`offscreen-group-${idx}`}>
+            {/* Offscreen Question Post - EXACT same structure and styling as QuestionCard */}
             <div
               id={`offscreen-q-${idx}`}
+              className={`w-[480px] shadow-2xl rounded-2xl overflow-hidden ${dimConfig.aspectClass} flex flex-col absolute top-0 left-0`}
               style={{
-                width: `${dimConfig.width}px`,
-                height: `${dimConfig.height}px`,
-                overflow: 'hidden',
+                width: '480px',
+                height: `${cardHeight}px`,
               }}
-              className="flex flex-col"
             >
               <TemplateComponent
                 question={q}
@@ -275,15 +291,14 @@ export default function DownloadManager({
               />
             </div>
 
-            {/* Offscreen Answer Reveal Post */}
+            {/* Offscreen Answer Reveal Post - EXACT same structure and styling as AnswerCard */}
             <div
               id={`offscreen-a-${idx}`}
+              className={`w-[480px] shadow-2xl rounded-2xl overflow-hidden ${dimConfig.aspectClass} flex flex-col absolute top-0 left-0`}
               style={{
-                width: `${dimConfig.width}px`,
-                height: `${dimConfig.height}px`,
-                overflow: 'hidden',
+                width: '480px',
+                height: `${cardHeight}px`,
               }}
-              className="flex flex-col"
             >
               <TemplateComponent
                 question={q}
@@ -295,7 +310,7 @@ export default function DownloadManager({
                 totalQuestions={questions.length}
               />
             </div>
-          </div>
+          </React.Fragment>
         ))}
       </div>
     </div>

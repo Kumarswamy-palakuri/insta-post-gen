@@ -57,16 +57,21 @@ export const captureNodeToDataUrl = async (node, format = 'png', dimensionKey = 
   }
 
   // Brief pause to ensure any pending browser paint/layout operations settle
-  await new Promise((resolve) => setTimeout(resolve, 60));
+  await new Promise((resolve) => setTimeout(resolve, 80));
 
   const rect = node.getBoundingClientRect();
-  const width = Math.round(rect.width) || node.offsetWidth || 1080;
-  const height = Math.round(rect.height) || node.offsetHeight || 1080;
+  const width = Math.round(rect.width) || node.offsetWidth || 480;
+  const height = Math.round(rect.height) || node.offsetHeight || 480;
+
+  // Calculate target resolution (1080px standard Instagram width)
+  const targetWidth = DIMENSIONS_CONFIG[dimensionKey]?.width || 1080;
+  // Calculate dynamic pixel ratio to guarantee crisp 1080px output matching preview 1:1
+  const pixelRatio = width > 0 ? targetWidth / width : 2.25;
 
   // html-to-image options for pixel-perfect export matching preview exactly
   const exportOptions = {
     quality: 0.98,
-    pixelRatio: 2, // 2x gives ultra-crisp retina rendering
+    pixelRatio,
     width,
     height,
     cacheBust: true,
@@ -191,6 +196,15 @@ export const downloadAllAsZip = async ({
     throw new Error('No items provided to export.');
   }
 
+  // Pre-flush document fonts
+  if (typeof document !== 'undefined' && document.fonts?.ready) {
+    try {
+      await document.fonts.ready;
+    } catch (e) {
+      // ignore
+    }
+  }
+
   const zip = new JSZip();
   const folder = zip.folder(sanitizeFilename(quizTitle));
   const ext = format === 'jpg' || format === 'jpeg' ? 'jpg' : 'png';
@@ -203,7 +217,8 @@ export const downloadAllAsZip = async ({
 
     // 1. Capture Question Post
     if (item.questionNode) {
-      if (onProgress) onProgress(currentCapture + 1, totalCaptures, `Rendering Question ${i + 1} Post...`);
+      if (onProgress) onProgress(currentCapture + 1, totalCaptures, `Rendering Slide ${i + 1} Question...`);
+      await new Promise((r) => setTimeout(r, 60)); // ensure DOM paint settle
       const qDataUrl = await captureNodeToDataUrl(item.questionNode, format, dimensionKey);
       const qBase64 = qDataUrl.split(',')[1];
       folder.file(`Slide_${qNum}a_Question.${ext}`, qBase64, { base64: true });
@@ -212,7 +227,8 @@ export const downloadAllAsZip = async ({
 
     // 2. Capture Answer Reveal Post
     if (item.answerNode) {
-      if (onProgress) onProgress(currentCapture + 1, totalCaptures, `Rendering Answer ${i + 1} Reveal...`);
+      if (onProgress) onProgress(currentCapture + 1, totalCaptures, `Rendering Slide ${i + 1} Answer Reveal...`);
+      await new Promise((r) => setTimeout(r, 60)); // ensure DOM paint settle
       const aDataUrl = await captureNodeToDataUrl(item.answerNode, format, dimensionKey);
       const aBase64 = aDataUrl.split(',')[1];
       folder.file(`Slide_${qNum}b_Answer_Reveal.${ext}`, aBase64, { base64: true });
