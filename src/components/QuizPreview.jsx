@@ -146,10 +146,10 @@ export default function QuizPreview({
           <button
             onClick={() => setShowCaptionModal(true)}
             className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-rose-500/20 hover:from-amber-500/30 hover:to-rose-500/30 border border-rose-500/30 text-rose-300 hover:text-white text-xs font-bold transition flex items-center space-x-1.5 active:scale-95"
-            title="Open viral caption generator with trending hashtags"
+            title="Open overall carousel caption for all questions with trending hashtags"
           >
             <Flame className="w-3.5 h-3.5 text-rose-400" />
-            <span>Viral Caption</span>
+            <span>Overall Caption</span>
           </button>
 
           <button
@@ -210,6 +210,7 @@ export default function QuizPreview({
         questions={questions}
         questionIndex={currentQuestionIndex}
         branding={branding}
+        initialMode="carousel"
         showNotification={showNotification}
       />
     </div>

@@ -49,12 +49,8 @@ export default function QuestionCard({
     }
   };
 
-  // Copy viral question caption to clipboard
+  // Copy viral question caption for this question only
   const handleCopyText = () => {
-    if (onOpenCaptionModal) {
-      onOpenCaptionModal(questionIndex);
-      return;
-    }
     const text = generateSingleQuestionCaption({
       question,
       branding,
@@ -65,7 +61,7 @@ export default function QuestionCard({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     if (showNotification) {
-      showNotification('Viral caption with high-reach hashtags copied!', 'success');
+      showNotification(`Question ${questionIndex + 1} caption & hashtags copied!`, 'success');
     }
   };
 
@@ -94,11 +90,11 @@ export default function QuestionCard({
 
           <button
             onClick={handleCopyText}
-            title="Copy viral Instagram caption with trending hashtags"
+            title={`Copy caption for Question ${questionIndex + 1} only`}
             className="p-1.5 rounded-lg bg-slate-700/70 hover:bg-slate-700 text-slate-300 hover:text-white transition text-xs flex items-center space-x-1"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Flame className="w-3.5 h-3.5 text-amber-400" />}
-            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Viral Caption'}</span>
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-amber-400" />}
+            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy Caption'}</span>
           </button>
         </div>
       </div>

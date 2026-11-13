@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Download, CheckCircle2, Copy, Check, Image as ImageIcon } from 'lucide-react';
 import { getTemplateById } from '../templates';
 import { downloadSingleNode, DIMENSIONS_CONFIG } from '../utils/imageExport';
+import { generateAnswerRevealCaption } from '../utils/captionGenerator';
 
 export default function AnswerCard({
   question,
@@ -46,14 +47,18 @@ export default function AnswerCard({
     }
   };
 
-  // Copy answer caption
+  // Copy answer reveal caption for this question only
   const handleCopyText = () => {
-    const text = `✅ ANSWER REVEAL: ${question.topic}\n\nQ: ${question.question}\n\nCorrect Answer: (${question.correctAnswer}) ${question.options[question.correctAnswer]}\n\n💡 Explanation: ${question.explanation}\n\nDid you get it right? Share this post with your friends!\nFollow @${branding.handle || 'learn_in_a_minute'} for daily knowledge.\n#quizanswer #education #studytips #dailygk`;
+    const text = generateAnswerRevealCaption({
+      question,
+      branding,
+      questionIndex,
+    });
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
     if (showNotification) {
-      showNotification('Answer caption copied to clipboard!', 'success');
+      showNotification(`Answer ${questionIndex + 1} reveal caption & hashtags copied!`, 'success');
     }
   };
 

@@ -24,11 +24,19 @@ export default function CaptionModal({
   questions = [],
   questionIndex = 0,
   branding = {},
+  initialMode = 'carousel',
   showNotification,
 }) {
-  const [captionMode, setCaptionMode] = useState('single'); // 'single' | 'carousel'
+  const [captionMode, setCaptionMode] = useState(initialMode || 'carousel'); // 'single' | 'carousel'
   const [editableCaption, setEditableCaption] = useState('');
   const [copied, setCopied] = useState(false);
+
+  // Sync mode whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setCaptionMode(initialMode || 'carousel');
+    }
+  }, [isOpen, initialMode]);
 
   // Generate caption when modal opens or mode changes
   useEffect(() => {
@@ -100,18 +108,6 @@ export default function CaptionModal({
         <div className="px-4 sm:px-5 py-2.5 bg-slate-950/60 border-b border-slate-800 flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center space-x-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/80">
             <button
-              onClick={() => setCaptionMode('single')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
-                captionMode === 'single'
-                  ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Current Question (Q{questionIndex + 1})</span>
-            </button>
-
-            <button
               onClick={() => setCaptionMode('carousel')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
                 captionMode === 'carousel'
@@ -120,7 +116,19 @@ export default function CaptionModal({
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>Full Carousel ({questions.length} Questions)</span>
+              <span>Overall Caption ({questions.length} Slides)</span>
+            </button>
+
+            <button
+              onClick={() => setCaptionMode('single')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
+                captionMode === 'single'
+                  ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Question Q{questionIndex + 1} Only</span>
             </button>
           </div>
 

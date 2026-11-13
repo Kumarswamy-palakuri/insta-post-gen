@@ -218,6 +218,49 @@ ${hashtags}`;
 }
 
 /**
+ * Generates an engagement-optimized caption for a Single Answer Reveal Post
+ */
+export function generateAnswerRevealCaption({
+  question,
+  branding = {},
+  questionIndex = 0,
+}) {
+  if (!question) return '';
+
+  const handle = (branding.handle || 'learn_in_a_minute').replace(/^@/, '');
+  const subText = branding.subText || 'Daily Knowledge Booster';
+  const topic = question.topic || 'General Knowledge';
+  const correctAnswerKey = question.correctAnswer || 'A';
+  const correctAnswerText = question.options?.[correctAnswerKey] || '';
+  const explanation = question.explanation || '';
+  const hashtags = getCuratedHashtags(topic).join(' ');
+
+  return `✅ ANSWER REVEAL: ${topic.toUpperCase()} 🎯
+
+❓ QUESTION:
+${question.question}
+
+🏆 CORRECT ANSWER:
+👉 Option (${correctAnswerKey}): ${correctAnswerText}
+
+💡 EXPLANATION:
+${explanation}
+
+━━━━━━━━━━━━━━━━━━━━━━
+💬 Did you get this right? Tell us in the comments! 👇
+👥 SHARE this with a friend to test their knowledge!
+💾 SAVE this post for your exam revision!
+
+🔔 Follow @${handle} for daily interactive quizzes & study notes!
+✨ ${subText}
+
+.
+.
+.
+${hashtags}`;
+}
+
+/**
  * Generates an engagement-optimized caption for a Full Carousel Post
  */
 export function generateCarouselCaption({
