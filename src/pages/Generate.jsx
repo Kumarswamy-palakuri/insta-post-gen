@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Code2,
+  Sparkles,
   Sliders,
   ChevronDown,
   ChevronUp,
@@ -88,12 +89,12 @@ export default function Generate({
             onClick={() => setShowJsonInput(!showJsonInput)}
             className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 flex-shrink-0 active:scale-95 border ${
               showJsonInput
-                ? 'bg-brand-600 text-white border-brand-500 shadow-md shadow-brand-600/30'
+                ? 'bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-600/30'
                 : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
             }`}
           >
-            <Code2 className="w-3.5 h-3.5 text-brand-300" />
-            <span>{showJsonInput ? 'Hide JSON' : 'Edit JSON'}</span>
+            <Sparkles className="w-3.5 h-3.5 text-purple-300" />
+            <span>{showJsonInput ? 'Hide Prompt/JSON' : 'AI Prompt & JSON'}</span>
             {showJsonInput ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
 
