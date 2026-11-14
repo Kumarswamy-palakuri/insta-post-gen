@@ -39,7 +39,7 @@ export default function ExamStyle({
       }}
     >
       {/* Official Header Strip */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b-2 border-indigo-500/30">
+      <div className={`relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b-2 border-indigo-500/30 ${fit.headerClass}`}>
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="w-7 h-7 sm:w-8 sm:h-8 rounded object-cover border border-indigo-400 flex-shrink-0" />
@@ -67,7 +67,7 @@ export default function ExamStyle({
       </div>
 
       {/* Main Question Body */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
+      <div className={`relative z-10 ${fit.mainSectionClass}`}>
         {/* Exam Section Tag */}
         <div className="flex items-center justify-between mb-1.5 flex-shrink-0">
           <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-950/80 text-indigo-300 border border-indigo-700/50 whitespace-nowrap flex-shrink-0 select-none">
@@ -143,7 +143,7 @@ export default function ExamStyle({
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 flex-shrink-0 pt-2 border-t-2 border-indigo-500/30 flex items-center justify-between gap-2 text-xs font-mono">
+      <div className={`relative z-10 flex-shrink-0 pt-2 border-t-2 border-indigo-500/30 flex items-center justify-between gap-2 text-xs font-mono ${fit.footerClass}`}>
         <div className="text-indigo-300 font-bold text-[10px] sm:text-xs min-w-0 flex-1">
           <span className="truncate block">{isAnswerMode ? answerCtaText : ctaText}</span>
         </div>

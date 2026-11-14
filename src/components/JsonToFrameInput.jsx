@@ -25,14 +25,10 @@ export default function JsonToFrameInput({
   showNotification,
 }) {
   const [activeTab, setActiveTab] = useState('prompt'); // 'prompt' | 'json'
-  const [jsonText, setJsonText] = useState(() => {
-    if (initialQuestions && initialQuestions.length > 0) {
-      return JSON.stringify(initialQuestions, null, 2);
-    }
-    return DEFAULT_SAMPLE_JSON_STRING;
-  });
+  // Start with empty string so sample data serves as a visual placeholder rather than prefilled value
+  const [jsonText, setJsonText] = useState('');
 
-  const [parseStatus, setParseStatus] = useState({ success: true, count: 0, error: null });
+  const [parseStatus, setParseStatus] = useState({ success: false, count: 0, error: null, isEmpty: true });
   const [copied, setCopied] = useState(false);
   const [autoSync, setAutoSync] = useState(true);
   const fileInputRef = useRef(null);
@@ -40,19 +36,29 @@ export default function JsonToFrameInput({
 
   // Validate on change
   useEffect(() => {
+    if (!jsonText || !jsonText.trim()) {
+      setParseStatus({ success: false, count: 0, error: null, isEmpty: true });
+      return;
+    }
+
     const result = parseQuizJsonToFrames(jsonText);
     if (result.success) {
-      setParseStatus({ success: true, count: result.questions.length, error: null });
+      setParseStatus({ success: true, count: result.questions.length, error: null, isEmpty: false });
       if (autoSync && onFramesUpdated) {
         onFramesUpdated(result.questions);
       }
     } else {
-      setParseStatus({ success: false, count: 0, error: result.error });
+      setParseStatus({ success: false, count: 0, error: result.error, isEmpty: false });
     }
   }, [jsonText, autoSync]);
 
   // Handle manual "Apply to Frames" click
   const handleApplyFrames = () => {
+    if (!jsonText || !jsonText.trim()) {
+      if (showNotification) showNotification('Please paste your quiz JSON first', 'info');
+      return;
+    }
+
     const result = parseQuizJsonToFrames(jsonText);
     if (result.success) {
       onFramesUpdated(result.questions);
@@ -68,6 +74,10 @@ export default function JsonToFrameInput({
 
   // Prettify / format JSON
   const handleFormatJson = () => {
+    if (!jsonText || !jsonText.trim()) {
+      if (showNotification) showNotification('Nothing to format — editor is empty', 'info');
+      return;
+    }
     try {
       const parsed = JSON.parse(jsonText);
       const formatted = JSON.stringify(parsed, null, 2);
@@ -78,14 +88,18 @@ export default function JsonToFrameInput({
     }
   };
 
-  // Load sample JSON
+  // Load sample JSON into value explicitly
   const handleLoadSample = () => {
     setJsonText(DEFAULT_SAMPLE_JSON_STRING);
-    if (showNotification) showNotification('Loaded sample Quiz JSON!', 'info');
+    if (showNotification) showNotification('Loaded sample Quiz JSON into editor!', 'info');
   };
 
   // Copy JSON to clipboard
   const handleCopyJson = () => {
+    if (!jsonText || !jsonText.trim()) {
+      if (showNotification) showNotification('Nothing to copy — editor is empty', 'info');
+      return;
+    }
     navigator.clipboard.writeText(jsonText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -286,8 +300,22 @@ export default function JsonToFrameInput({
                 data-gramm="false"
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
-                placeholder={`[\n  {\n    "topic": "Indian History",\n    "difficulty": "Medium",\n    "question": "Who founded the Maurya Empire with Chanakya?",\n    "options": {\n      "A": "Ashoka the Great",\n      "B": "Chandragupta Maurya",\n      "C": "Bindusara",\n      "D": "Harshavardhana"\n    },\n    "correctAnswer": "B",\n    "explanation": "Chandragupta Maurya founded the Maurya Empire in 322 BCE."\n  }\n]`}
-                className="w-full p-3 font-mono text-xs sm:text-sm text-slate-200 bg-transparent resize-y focus:outline-none focus:ring-1 focus:ring-brand-500/50 leading-relaxed placeholder:text-slate-600"
+                placeholder={`[
+  {
+    "topic": "Indian History",
+    "difficulty": "Medium",
+    "question": "Who founded the Maurya Empire with the guidance and mentorship of Chanakya?",
+    "options": {
+      "A": "Ashoka the Great",
+      "B": "Chandragupta Maurya",
+      "C": "Bindusara",
+      "D": "Harshavardhana"
+    },
+    "correctAnswer": "B",
+    "explanation": "Chandragupta Maurya founded the Maurya Empire in 322 BCE after overthrowing the Nanda Dynasty with the guidance of Chanakya."
+  }
+]`}
+                className="w-full p-3 font-mono text-xs sm:text-sm text-slate-200 bg-transparent resize-y focus:outline-none focus:ring-1 focus:ring-brand-500/50 leading-relaxed placeholder:text-slate-500/60"
               />
             </div>
 
@@ -295,7 +323,14 @@ export default function JsonToFrameInput({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
               {/* Status Badge */}
               <div className="min-w-0">
-                {parseStatus.success ? (
+                {parseStatus.isEmpty ? (
+                  <div className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 bg-slate-800/60 border border-slate-700/80 px-3 py-1.5 rounded-xl">
+                    <Sparkles className="w-4 h-4 text-brand-400 flex-shrink-0" />
+                    <span className="truncate">
+                      Ready: Paste your AI JSON array above (or click "Sample JSON" to test)
+                    </span>
+                  </div>
+                ) : parseStatus.success ? (
                   <div className="inline-flex items-center space-x-2 text-xs font-bold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1.5 rounded-xl">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                     <span className="truncate">

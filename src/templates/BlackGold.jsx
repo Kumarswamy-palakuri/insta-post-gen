@@ -44,7 +44,7 @@ export default function BlackGold({
       <div className="absolute inset-0 bg-[radial-gradient(#eab308_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
 
       {/* Top Header Bar */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-amber-500/20">
+      <div className={`relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-amber-500/20 ${fit.headerClass}`}>
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-amber-400/50 shadow-md flex-shrink-0" />
@@ -72,7 +72,7 @@ export default function BlackGold({
       </div>
 
       {/* Question Main Section */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
+      <div className={`relative z-10 ${fit.mainSectionClass}`}>
         {/* Post Type Badge */}
         <div className="flex items-center flex-wrap gap-2 mb-1.5 flex-shrink-0">
           <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30 whitespace-nowrap flex-shrink-0 select-none">
@@ -157,7 +157,7 @@ export default function BlackGold({
       </div>
 
       {/* Footer Branding & Call to Action */}
-      <div className="relative z-10 flex-shrink-0 pt-2 border-t border-amber-500/20 flex items-center justify-between gap-2 text-xs">
+      <div className={`relative z-10 flex-shrink-0 pt-2 border-t border-amber-500/20 flex items-center justify-between gap-2 text-xs ${fit.footerClass}`}>
         <div className="font-bold text-amber-400 flex items-center space-x-1.5 text-[10px] sm:text-xs min-w-0 flex-1">
           <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500 flex-shrink-0" />
           <span className="truncate">{isAnswerMode ? answerCtaText : ctaText}</span>

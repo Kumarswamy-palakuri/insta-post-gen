@@ -43,7 +43,7 @@ export default function BlueYellow({
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-blue-800/40">
+      <div className={`relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-blue-800/40 ${fit.headerClass}`}>
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover border border-yellow-400 flex-shrink-0" />
@@ -71,7 +71,7 @@ export default function BlueYellow({
       </div>
 
       {/* Question Content */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
+      <div className={`relative z-10 ${fit.mainSectionClass}`}>
         <div className="flex items-center flex-wrap gap-2 mb-1.5 flex-shrink-0">
           <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-900/50 border border-blue-700/50 text-blue-300 whitespace-nowrap flex-shrink-0 select-none">
             {isAnswerMode ? (
@@ -147,7 +147,7 @@ export default function BlueYellow({
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 flex-shrink-0 pt-2 border-t border-blue-800/40 flex items-center justify-between gap-2 text-xs">
+      <div className={`relative z-10 flex-shrink-0 pt-2 border-t border-blue-800/40 flex items-center justify-between gap-2 text-xs ${fit.footerClass}`}>
         <div className="font-bold text-yellow-400 text-[10px] sm:text-xs min-w-0 flex-1">
           <span className="truncate block">{isAnswerMode ? answerCtaText : ctaText}</span>
         </div>

@@ -15,10 +15,11 @@ export const getAdaptiveCardClasses = (
   const isLong = questionLength > 85;
   const isVeryLong = questionLength > 140;
 
-  // Container padding
+  // Container padding & vertical distribution
   let containerPadding = 'p-5 sm:p-6 justify-between';
   if (isStory) {
-    containerPadding = 'py-12 px-7 justify-between';
+    // In Story / Reel (9:16), vertically center the cohesive content block in Instagram safe zone
+    containerPadding = 'py-12 sm:py-16 px-6 sm:px-8 justify-center';
   } else if (dimension === 'portrait') {
     containerPadding = 'py-8 px-7 justify-between';
   } else {
@@ -27,6 +28,14 @@ export const getAdaptiveCardClasses = (
       ? 'p-3 sm:p-4 justify-between'
       : 'p-3 sm:p-5 justify-between';
   }
+
+  // Header & Footer Story Adjacency
+  // In Story (9:16), header and footer sit right adjacent above and below question contents (not most top & most bottom)
+  const headerClass = isStory ? 'mb-3 sm:mb-4' : '';
+  const footerClass = isStory ? 'mt-3 sm:mt-4' : '';
+  const mainSectionClass = isStory
+    ? 'flex-initial py-2 sm:py-3'
+    : 'flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2';
 
   // Question Typography
   let questionSize = 'text-base sm:text-lg';
@@ -71,6 +80,9 @@ export const getAdaptiveCardClasses = (
 
   return {
     containerPadding,
+    headerClass,
+    footerClass,
+    mainSectionClass,
     questionSize,
     optionGap,
     optionPadding,

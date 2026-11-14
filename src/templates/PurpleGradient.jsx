@@ -43,7 +43,7 @@ export default function PurpleGradient({
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-600/20 rounded-full blur-[90px] pointer-events-none" />
 
       {/* Header */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-purple-500/20">
+      <div className={`relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-purple-500/20 ${fit.headerClass}`}>
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-purple-400 flex-shrink-0" />
@@ -71,7 +71,7 @@ export default function PurpleGradient({
       </div>
 
       {/* Question */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
+      <div className={`relative z-10 ${fit.mainSectionClass}`}>
         <div className="flex items-center flex-wrap gap-2 mb-1.5 flex-shrink-0">
           <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-fuchsia-500/30 to-purple-500/30 text-fuchsia-300 border border-fuchsia-400/30 whitespace-nowrap flex-shrink-0 select-none">
             {isAnswerMode ? (
@@ -147,7 +147,7 @@ export default function PurpleGradient({
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 flex-shrink-0 pt-2 border-t border-purple-500/20 flex items-center justify-between gap-2 text-xs">
+      <div className={`relative z-10 flex-shrink-0 pt-2 border-t border-purple-500/20 flex items-center justify-between gap-2 text-xs ${fit.footerClass}`}>
         <div className="font-bold text-fuchsia-300 text-[10px] sm:text-xs min-w-0 flex-1">
           <span className="truncate block">{isAnswerMode ? answerCtaText : ctaText}</span>
         </div>

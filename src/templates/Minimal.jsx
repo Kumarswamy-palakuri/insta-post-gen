@@ -39,7 +39,7 @@ export default function Minimal({
       }}
     >
       {/* Header */}
-      <div className="relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-neutral-800">
+      <div className={`relative z-10 flex-shrink-0 flex items-center justify-between gap-2 pb-2 sm:pb-2.5 border-b border-neutral-800 ${fit.headerClass}`}>
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="w-7 h-7 rounded object-cover border border-neutral-700 flex-shrink-0" />
@@ -66,7 +66,7 @@ export default function Minimal({
       </div>
 
       {/* Main Question */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center py-1 sm:py-2">
+      <div className={`relative z-10 ${fit.mainSectionClass}`}>
         <div className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase mb-1.5 whitespace-nowrap flex-shrink-0 select-none">
           {isAnswerMode ? '[ 02 / REVEAL ]' : '[ 01 / QUESTION ]'}
         </div>
@@ -120,7 +120,7 @@ export default function Minimal({
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 flex-shrink-0 pt-2 border-t border-neutral-800 flex items-center justify-between gap-2 text-[9px] sm:text-[11px] font-mono text-neutral-400">
+      <div className={`relative z-10 flex-shrink-0 pt-2 border-t border-neutral-800 flex items-center justify-between gap-2 text-[9px] sm:text-[11px] font-mono text-neutral-400 ${fit.footerClass}`}>
         <div className="min-w-0 flex-1 truncate">{isAnswerMode ? answerCtaText : ctaText}</div>
         <div className="uppercase tracking-widest text-neutral-300 font-bold flex-shrink-0 whitespace-nowrap">@{handle}</div>
       </div>
