@@ -23,6 +23,10 @@ export default function Minimal({
   const qNum = String(questionIndex + 1).padStart(2, '0');
   const totalNum = String(totalQuestions).padStart(2, '0');
 
+  const rawCorrect = String(question.correctAnswer || 'A').toUpperCase().trim();
+  const correctKey = ['A', 'B', 'C', 'D'].includes(rawCorrect) ? rawCorrect : 'A';
+  const optionsToRender = isAnswerMode ? [correctKey] : ['A', 'B', 'C', 'D'];
+
   const fit = getAdaptiveCardClasses(
     dimension,
     isAnswerMode,
@@ -75,10 +79,10 @@ export default function Minimal({
           {question.question}
         </h2>
 
-        {/* Options */}
+        {/* Options: In Answer Mode, show ONLY the single correct option to free space for the Explanation */}
         <div className={`grid grid-cols-1 ${fit.optionGap}`}>
-          {['A', 'B', 'C', 'D'].map((key) => {
-            const isCorrect = key === question.correctAnswer;
+          {optionsToRender.map((key) => {
+            const isCorrect = key === correctKey;
             const optionText = question.options?.[key] || '';
 
             let cardStyle = 'bg-neutral-900 border-neutral-800 text-neutral-200 hover:border-neutral-700';
@@ -105,6 +109,11 @@ export default function Minimal({
                 <div className={`font-medium leading-tight flex-1 ${fit.optionTextSize}`}>
                   {optionText}
                 </div>
+                {isAnswerMode && isCorrect && (
+                  <span className="ml-1.5 font-mono text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/50 whitespace-nowrap">
+                    [{key}] CORRECT
+                  </span>
+                )}
               </div>
             );
           })}

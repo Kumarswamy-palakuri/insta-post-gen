@@ -23,6 +23,10 @@ export default function GreenWhite({
   const qNum = String(questionIndex + 1).padStart(2, '0');
   const totalNum = String(totalQuestions).padStart(2, '0');
 
+  const rawCorrect = String(question.correctAnswer || 'A').toUpperCase().trim();
+  const correctKey = ['A', 'B', 'C', 'D'].includes(rawCorrect) ? rawCorrect : 'A';
+  const optionsToRender = isAnswerMode ? [correctKey] : ['A', 'B', 'C', 'D'];
+
   const fit = getAdaptiveCardClasses(
     dimension,
     isAnswerMode,
@@ -92,10 +96,10 @@ export default function GreenWhite({
           {question.question}
         </h2>
 
-        {/* Option Cards */}
+        {/* Option Cards: In Answer Mode, show ONLY the single correct option to free space for the Explanation */}
         <div className={`grid grid-cols-1 ${fit.optionGap}`}>
-          {['A', 'B', 'C', 'D'].map((key) => {
-            const isCorrect = key === question.correctAnswer;
+          {optionsToRender.map((key) => {
+            const isCorrect = key === correctKey;
             const optionText = question.options?.[key] || '';
 
             let cardStyle = 'bg-emerald-950/60 border-emerald-900/60 text-emerald-100 hover:border-emerald-500/50';
@@ -123,8 +127,8 @@ export default function GreenWhite({
                   {optionText}
                 </div>
                 {isAnswerMode && isCorrect && (
-                  <span className="ml-1.5 text-[10px] font-bold text-emerald-300 bg-emerald-900 px-1.5 py-0.2 rounded border border-emerald-400/50">
-                    RIGHT
+                  <span className="ml-1.5 text-[10px] font-bold text-emerald-300 bg-emerald-900 px-2 py-0.5 rounded border border-emerald-400/50 whitespace-nowrap">
+                    ({key}) RIGHT
                   </span>
                 )}
               </div>

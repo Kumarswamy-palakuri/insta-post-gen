@@ -23,6 +23,10 @@ export default function PurpleGradient({
   const qNum = String(questionIndex + 1).padStart(2, '0');
   const totalNum = String(totalQuestions).padStart(2, '0');
 
+  const rawCorrect = String(question.correctAnswer || 'A').toUpperCase().trim();
+  const correctKey = ['A', 'B', 'C', 'D'].includes(rawCorrect) ? rawCorrect : 'A';
+  const optionsToRender = isAnswerMode ? [correctKey] : ['A', 'B', 'C', 'D'];
+
   const fit = getAdaptiveCardClasses(
     dimension,
     isAnswerMode,
@@ -92,10 +96,10 @@ export default function PurpleGradient({
           {question.question}
         </h2>
 
-        {/* Options */}
+        {/* Options: In Answer Mode, show ONLY the single correct option to free space for the Explanation */}
         <div className={`grid grid-cols-1 ${fit.optionGap}`}>
-          {['A', 'B', 'C', 'D'].map((key) => {
-            const isCorrect = key === question.correctAnswer;
+          {optionsToRender.map((key) => {
+            const isCorrect = key === correctKey;
             const optionText = question.options?.[key] || '';
 
             let cardClass = 'bg-white/[0.07] backdrop-blur-md border-white/10 text-purple-100 hover:border-purple-400/40 hover:bg-white/[0.1]';
@@ -123,8 +127,8 @@ export default function PurpleGradient({
                   {optionText}
                 </div>
                 {isAnswerMode && isCorrect && (
-                  <span className="ml-1.5 text-[10px] font-bold text-emerald-300 bg-emerald-900/60 px-1.5 py-0.2 rounded border border-emerald-500/40">
-                    CORRECT
+                  <span className="ml-1.5 text-[10px] font-bold text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded border border-emerald-500/40 whitespace-nowrap">
+                    ({key}) CORRECT
                   </span>
                 )}
               </div>

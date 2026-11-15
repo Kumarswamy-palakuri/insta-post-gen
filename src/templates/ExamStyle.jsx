@@ -23,6 +23,10 @@ export default function ExamStyle({
   const qNum = String(questionIndex + 1).padStart(2, '0');
   const totalNum = String(totalQuestions).padStart(2, '0');
 
+  const rawCorrect = String(question.correctAnswer || 'A').toUpperCase().trim();
+  const correctKey = ['A', 'B', 'C', 'D'].includes(rawCorrect) ? rawCorrect : 'A';
+  const optionsToRender = isAnswerMode ? [correctKey] : ['A', 'B', 'C', 'D'];
+
   const fit = getAdaptiveCardClasses(
     dimension,
     isAnswerMode,
@@ -86,10 +90,10 @@ export default function ExamStyle({
           </h2>
         </div>
 
-        {/* OMR-Style Option Bubbles */}
+        {/* OMR-Style Option Bubbles: In Answer Mode, show ONLY the single correct option to free space for the Explanation */}
         <div className={`grid grid-cols-1 ${fit.optionGap}`}>
-          {['A', 'B', 'C', 'D'].map((key) => {
-            const isCorrect = key === question.correctAnswer;
+          {optionsToRender.map((key) => {
+            const isCorrect = key === correctKey;
             const optionText = question.options?.[key] || '';
 
             let containerClass = 'bg-slate-900/80 border-slate-700/80 text-slate-200 hover:border-indigo-400';
@@ -119,8 +123,8 @@ export default function ExamStyle({
                   {optionText}
                 </div>
                 {isAnswerMode && isCorrect && (
-                  <span className="text-[10px] font-bold text-emerald-400 px-1.5 py-0.2 rounded bg-emerald-900/60 border border-emerald-500/40">
-                    CORRECT
+                  <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-900/60 border border-emerald-500/40 whitespace-nowrap">
+                    ({key}) CORRECT
                   </span>
                 )}
               </div>

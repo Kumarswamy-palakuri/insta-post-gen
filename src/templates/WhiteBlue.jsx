@@ -23,6 +23,10 @@ export default function WhiteBlue({
   const qNum = String(questionIndex + 1).padStart(2, '0');
   const totalNum = String(totalQuestions).padStart(2, '0');
 
+  const rawCorrect = String(question.correctAnswer || 'A').toUpperCase().trim();
+  const correctKey = ['A', 'B', 'C', 'D'].includes(rawCorrect) ? rawCorrect : 'A';
+  const optionsToRender = isAnswerMode ? [correctKey] : ['A', 'B', 'C', 'D'];
+
   const fit = getAdaptiveCardClasses(
     dimension,
     isAnswerMode,
@@ -92,10 +96,10 @@ export default function WhiteBlue({
           {question.question}
         </h2>
 
-        {/* Option Cards */}
+        {/* Option Cards: In Answer Mode, show ONLY the single correct option to free space for the Explanation */}
         <div className={`grid grid-cols-1 ${fit.optionGap}`}>
-          {['A', 'B', 'C', 'D'].map((key) => {
-            const isCorrect = key === question.correctAnswer;
+          {optionsToRender.map((key) => {
+            const isCorrect = key === correctKey;
             const optionText = question.options?.[key] || '';
 
             let cardStyle = 'bg-white border-slate-200 shadow-sm text-slate-800 hover:border-blue-400';
@@ -123,8 +127,8 @@ export default function WhiteBlue({
                   {optionText}
                 </div>
                 {isAnswerMode && isCorrect && (
-                  <span className="ml-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300">
-                    CORRECT
+                  <span className="ml-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300 whitespace-nowrap">
+                    ({key}) CORRECT
                   </span>
                 )}
               </div>
