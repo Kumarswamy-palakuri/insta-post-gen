@@ -14,7 +14,7 @@ import { downloadAllAsZip, downloadSingleNode, DIMENSIONS_CONFIG } from '../util
 
 export default function DownloadManager({
   questions = [],
-  selectedTemplate = 'black-gold',
+  selectedTemplate = 'white-blue',
   branding = {},
   customization = {},
   dimension = 'square',

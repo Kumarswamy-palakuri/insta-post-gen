@@ -1,13 +1,31 @@
+import WhiteBlue from './WhiteBlue';
+import Minimal from './Minimal';
 import BlackGold from './BlackGold';
 import BlueYellow from './BlueYellow';
 import PurpleGradient from './PurpleGradient';
-import WhiteBlue from './WhiteBlue';
 import OrangeBlack from './OrangeBlack';
 import GreenWhite from './GreenWhite';
-import Minimal from './Minimal';
 import ExamStyle from './ExamStyle';
 
 export const TEMPLATES = [
+  {
+    id: 'white-blue',
+    name: 'Studio White & Indigo',
+    description: 'Crisp pure white canvas with high-converting royal indigo & emerald accents',
+    category: 'Recommended',
+    previewColor: 'from-white via-blue-50 to-indigo-100 border border-slate-200',
+    accentColor: '#2563eb',
+    component: WhiteBlue,
+  },
+  {
+    id: 'minimal',
+    name: 'Modern Minimal White',
+    description: 'Swiss typographic style, crisp pure white canvas, matte black & emerald details',
+    category: 'Light Theme',
+    previewColor: 'from-white via-neutral-50 to-neutral-200 border border-neutral-300',
+    accentColor: '#0f172a',
+    component: Minimal,
+  },
   {
     id: 'black-gold',
     name: 'Black & Gold',
@@ -36,15 +54,6 @@ export const TEMPLATES = [
     component: PurpleGradient,
   },
   {
-    id: 'white-blue',
-    name: 'White & Blue',
-    description: 'Clean academic daytime reading with corporate blue',
-    category: 'Light Theme',
-    previewColor: 'from-slate-50 via-blue-50 to-slate-100',
-    accentColor: '#2563eb',
-    component: WhiteBlue,
-  },
-  {
     id: 'orange-black',
     name: 'Orange & Black',
     description: 'Bold energetic creator aesthetic with high engagement',
@@ -63,15 +72,6 @@ export const TEMPLATES = [
     component: GreenWhite,
   },
   {
-    id: 'minimal',
-    name: 'Modern Minimal',
-    description: 'Swiss typographic style, matte charcoal, hairline details',
-    category: 'Editorial Minimal',
-    previewColor: 'from-[#121214] to-[#1a1a1e]',
-    accentColor: '#ffffff',
-    component: Minimal,
-  },
-  {
     id: 'exam-style',
     name: 'Premium Exam Style',
     description: 'Official test series paper with OMR bubble options',
@@ -87,13 +87,12 @@ export const getTemplateById = (id) => {
 };
 
 export {
+  WhiteBlue,
+  Minimal,
   BlackGold,
   BlueYellow,
   PurpleGradient,
-  WhiteBlue,
   OrangeBlack,
   GreenWhite,
-  Minimal,
   ExamStyle,
 };
-

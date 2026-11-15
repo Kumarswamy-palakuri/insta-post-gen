@@ -311,7 +311,7 @@ export default function QuizEditor({
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                  Custom Background (Optional Override)
+                  Canvas Background Color
                 </label>
                 {customization.customBg && (
                   <button
@@ -323,10 +323,10 @@ export default function QuizEditor({
                   </button>
                 )}
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 mb-2">
                 <input
                   type="color"
-                  value={customization.customBg || '#0f172a'}
+                  value={customization.customBg || '#ffffff'}
                   onChange={(e) => onUpdateCustomization({ ...customization, customBg: e.target.value })}
                   className="w-10 h-10 rounded-xl cursor-pointer bg-slate-800 border border-slate-700 p-0.5"
                 />
@@ -334,9 +334,37 @@ export default function QuizEditor({
                   type="text"
                   value={customization.customBg || ''}
                   onChange={(e) => onUpdateCustomization({ ...customization, customBg: e.target.value })}
-                  placeholder="Template default (or #0f172a)"
+                  placeholder="Template default (#ffffff)"
                   className="flex-1 px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white text-xs font-mono"
                 />
+              </div>
+
+              {/* Quick Background Presets */}
+              <div className="flex items-center space-x-2">
+                {[
+                  { label: 'Pure White', bg: '#ffffff', text: '#0f172a' },
+                  { label: 'Warm Cream', bg: '#fefce8', text: '#1c1917' },
+                  { label: 'Ice Blue', bg: '#f0f9ff', text: '#0c4a6e' },
+                  { label: 'Obsidian Dark', bg: '#09090b', text: '#fafafa' },
+                ].map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() =>
+                      onUpdateCustomization({
+                        ...customization,
+                        customBg: preset.bg,
+                        customTextColor: preset.text,
+                      })
+                    }
+                    className="px-2 py-1 rounded-lg text-[10px] font-bold border transition flex items-center space-x-1.5 bg-slate-800/80 border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white"
+                  >
+                    <span
+                      className="w-2.5 h-2.5 rounded-full border border-slate-400"
+                      style={{ backgroundColor: preset.bg }}
+                    />
+                    <span>{preset.label}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -359,7 +387,7 @@ export default function QuizEditor({
               <div className="flex items-center space-x-3">
                 <input
                   type="color"
-                  value={customization.customTextColor || '#f8fafc'}
+                  value={customization.customTextColor || '#0f172a'}
                   onChange={(e) => onUpdateCustomization({ ...customization, customTextColor: e.target.value })}
                   className="w-10 h-10 rounded-xl cursor-pointer bg-slate-800 border border-slate-700 p-0.5"
                 />
@@ -367,7 +395,7 @@ export default function QuizEditor({
                   type="text"
                   value={customization.customTextColor || ''}
                   onChange={(e) => onUpdateCustomization({ ...customization, customTextColor: e.target.value })}
-                  placeholder="Template default (or #f8fafc)"
+                  placeholder="Template default (#0f172a)"
                   className="flex-1 px-3 py-2 bg-slate-800 rounded-xl border border-slate-700 text-white text-xs font-mono"
                 />
               </div>

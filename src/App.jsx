@@ -37,7 +37,7 @@ export default function App() {
     ctaText: initialPrefs.branding?.ctaText || 'Comment Your Answer 👇',
     answerCtaText: initialPrefs.branding?.answerCtaText || 'Did you get it right? Share with friends! 🚀',
   });
-  const [selectedTemplate, setSelectedTemplate] = useState(initialPrefs.defaultTemplate || 'black-gold');
+  const [selectedTemplate, setSelectedTemplate] = useState(initialPrefs.defaultTemplate || 'white-blue');
   const [dimension, setDimension] = useState(initialPrefs.defaultDimensions || 'square');
   const [customization, setCustomization] = useState({
     font: 'font-sans',

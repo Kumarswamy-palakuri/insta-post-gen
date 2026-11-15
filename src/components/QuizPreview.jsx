@@ -21,7 +21,7 @@ export default function QuizPreview({
   questions = [],
   currentQuestionIndex = 0,
   onChangeQuestionIndex,
-  selectedTemplate = 'black-gold',
+  selectedTemplate = 'white-blue',
   branding = {},
   customization = {},
   dimension = 'square',

@@ -17,7 +17,7 @@ const KEYS = {
 const DEFAULT_PREFERENCES = {
   theme: 'dark', // 'dark' | 'light'
   defaultDimensions: 'square', // 'square' (1080x1080) | 'portrait' (1080x1350) | 'story' (1080x1920)
-  defaultTemplate: 'black-gold',
+  defaultTemplate: 'white-blue',
   branding: {
     handle: 'learn_in_a_minute',
     subText: 'Daily Knowledge Booster',
@@ -111,6 +111,11 @@ export const getPreferences = () => {
         ...(parsed.branding || {}),
         logoUrl: '/logo.png',
       };
+      localStorage.setItem(KEYS.PREFERENCES, JSON.stringify(parsed));
+    }
+    // Auto-migrate default template to white-blue if black-gold was previously saved
+    if (!parsed.defaultTemplate || parsed.defaultTemplate === 'black-gold') {
+      parsed.defaultTemplate = 'white-blue';
       localStorage.setItem(KEYS.PREFERENCES, JSON.stringify(parsed));
     }
     return parsed;
@@ -252,7 +257,7 @@ export const addDownloadHistory = (item) => {
       title: item.title || 'Instagram Quiz Post',
       type: item.type || 'PNG',
       format: item.format || 'square',
-      template: item.template || 'black-gold',
+      template: item.template || 'white-blue',
       count: item.count || 1,
       timestamp: new Date().toISOString(),
     };

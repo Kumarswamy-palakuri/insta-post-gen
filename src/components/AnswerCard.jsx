@@ -8,7 +8,7 @@ export default function AnswerCard({
   question,
   questionIndex = 0,
   totalQuestions = 1,
-  selectedTemplate = 'black-gold',
+  selectedTemplate = 'white-blue',
   branding = {},
   customization = {},
   dimension = 'square',

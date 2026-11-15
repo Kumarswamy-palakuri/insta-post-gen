@@ -210,7 +210,7 @@ export default function Settings({ showNotification, onPreferencesUpdated }) {
               Default Post Template
             </label>
             <select
-              value={preferences.defaultTemplate || 'black-gold'}
+              value={preferences.defaultTemplate || 'white-blue'}
               onChange={(e) =>
                 setPrefs((prev) => ({
                   ...prev,

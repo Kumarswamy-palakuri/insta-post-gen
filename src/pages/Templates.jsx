@@ -26,12 +26,12 @@ export default function Templates({
   const [filter, setFilter] = useState('All');
   const [previewMode, setPreviewMode] = useState('question'); // 'question' | 'answer'
 
-  const categories = ['All', 'Dark', 'Light', 'High Contrast'];
+  const categories = ['All', 'Light', 'Dark', 'High Contrast'];
 
   const filtered = TEMPLATES.filter((t) => {
     if (filter === 'All') return true;
-    if (filter === 'Dark') return t.id.includes('black') || t.id.includes('purple') || t.id.includes('orange') || t.id.includes('minimal');
-    if (filter === 'Light') return t.id.includes('white');
+    if (filter === 'Light') return t.id.includes('white') || t.id.includes('minimal');
+    if (filter === 'Dark') return t.id.includes('black') || t.id.includes('purple') || t.id.includes('orange');
     if (filter === 'High Contrast') return t.id.includes('yellow') || t.id.includes('exam') || t.id.includes('green');
     return true;
   });
